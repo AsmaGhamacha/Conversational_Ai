@@ -1,0 +1,6 @@
+{
+    "python.defaultInterpreterPath": "./ai_agent/Scripts/python.exe",
+    "python.analysis.extraPaths": [
+        "./ai_agent/Lib/site-packages"
+    ]
+}
