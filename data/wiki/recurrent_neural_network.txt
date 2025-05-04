@@ -1,0 +1,66 @@
+Recurrent neural networks (RNNs) are a class of artificial neural networks designed for processing sequential data, such as text, speech, and time series, where the order of elements is important. Unlike feedforward neural networks, which process inputs independently, RNNs utilize recurrent connections, where the output of a neuron at one time step is fed back as input to the network at the next time step. This enables RNNs to capture temporal dependencies and patterns within sequences.
+The fundamental building block of RNNs is the recurrent unit, which maintains a hidden state—a form of memory that is updated at each time step based on the current input and the previous hidden state. This feedback mechanism allows the network to learn from past inputs and incorporate that knowledge into its current processing. RNNs have been successfully applied to tasks such as unsegmented, connected handwriting recognition, speech recognition, natural language processing, and neural machine translation.
+However, traditional RNNs suffer from the vanishing gradient problem, which limits their ability to learn long-range dependencies. This issue was addressed by the development of the long short-term memory (LSTM) architecture in 1997, making it the standard RNN variant for handling long-term dependencies. Later, Gated Recurrent Units (GRUs) were introduced as a more computationally efficient alternative.
+In recent years, Transformers, which rely on self-attention mechanisms instead of recurrence, have become the dominant architecture for many sequence-processing tasks, particularly in natural language processing, due to their superior handling of long-range dependencies and greater parallelizability. Nevertheless, RNNs remain relevant for applications where computational efficiency, real-time processing, or the inherent sequential nature of data is crucial.
+
+
+## History
+
+
+## Configurations
+An RNN-based model can be factored into two parts: configuration and architecture. Multiple RNN can be combined in a data flow, and the data flow itself is the configuration. Each RNN itself may have any architecture, including LSTM, GRU, etc.
+
+## Architectures
+
+
+## Training
+
+
+## Other architectures
+
+
+## Libraries
+Modern libraries provide runtime-optimized implementations of the above functionality or allow to speed up the slow loop by just-in-time compilation.
+
+Apache Singa
+Caffe: Created by the Berkeley Vision and Learning Center (BVLC). It supports both CPU and GPU. Developed in C++, and has Python and MATLAB wrappers.
+Chainer: Fully in Python, production support for CPU, GPU, distributed training.
+Deeplearning4j: Deep learning in Java and Scala on multi-GPU-enabled Spark.
+Flux: includes interfaces for RNNs, including GRUs and LSTMs, written in Julia.
+Keras: High-level API, providing a wrapper to many other deep learning libraries.
+Microsoft Cognitive Toolkit
+MXNet: an open-source deep learning framework used to train and deploy deep neural networks.
+PyTorch: Tensors and Dynamic neural networks in Python with GPU acceleration.
+TensorFlow: Apache 2.0-licensed Theano-like library with support for CPU, GPU and Google's proprietary TPU, mobile
+Theano: A deep-learning library for Python with an API largely compatible with the NumPy library.
+Torch: A scientific computing framework with support for machine learning algorithms, written in C and Lua.
+
+## Applications
+Applications of recurrent neural networks include:
+
+Machine translation
+Robot control
+Time series prediction
+Speech recognition
+Speech synthesis
+Brain–computer interfaces
+Time series anomaly detection
+Text-to-Video model
+Rhythm learning
+Music composition
+Grammar learning
+Handwriting recognition
+Human action recognition
+Protein homology detection
+Predicting subcellular localization of proteins
+Several prediction tasks in the area of business process management
+Prediction in medical care pathways
+Predictions of fusion plasma disruptions in reactors (Fusion Recurrent Neural Network (FRNN) code)
+
+## References
+
+
+## Further reading
+Mandic, Danilo P.; Chambers, Jonathon A. (2001). Recurrent Neural Networks for Prediction: Learning Algorithms, Architectures and Stability. Wiley. ISBN 978-0-471-49517-8.
+Grossberg, Stephen (2013-02-22). "Recurrent Neural Networks". Scholarpedia. 8 (2): 1888. Bibcode:2013SchpJ...8.1888G. doi:10.4249/scholarpedia.1888. ISSN 1941-6016.
+Recurrent Neural Networks. List of RNN papers by Jürgen Schmidhuber's group at Dalle Molle Institute for Artificial Intelligence Research.

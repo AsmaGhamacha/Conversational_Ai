@@ -1,0 +1,52 @@
+Attention is a machine learning method that determines the relative importance of each component in a sequence relative to the other components in that sequence. In natural language processing, importance is represented by "soft" weights assigned to each word in a sentence. More generally, attention encodes vectors called token embeddings across a fixed-width sequence that can range from tens to millions of tokens in size.
+Unlike "hard" weights, which are computed during the backwards training pass, "soft" weights exist only in the forward pass and therefore change with every step of the input. Earlier designs implemented the attention mechanism in a serial recurrent neural network (RNN) language translation system, but a more recent design, namely the transformer, removed the slower sequential RNN and relied more heavily on the faster parallel attention scheme.
+Inspired by ideas about attention in humans, the attention mechanism was developed to address the weaknesses of leveraging information from the hidden layers of recurrent neural networks. Recurrent neural networks favor more recent information contained in words at the end of a sentence, while information earlier in the sentence tends to be attenuated. Attention allows a token equal access to any part of a sentence directly, rather than only through the previous state.
+
+
+## History
+Academic reviews of the history of the attention mechanism are provided in Niu et al. and Soydaner.
+
+## Overview
+The modern era of machine attention was revitalized by grafting an attention mechanism (Fig 1.  orange) to an Encoder-Decoder.
+
+Figure 2 shows the internal step-by-step operation of the attention block (A) in Fig 1.
+
+This attention scheme has been compared to the Query-Key analogy of relational databases.  That comparison suggests an asymmetric role for the Query and Key vectors, where one item of interest (the Query vector "that") is matched against all possible items (the Key vectors of each word in the sentence).   However, both Self and Cross Attentions' parallel calculations matches all tokens of the K matrix with all tokens of the Q matrix; therefore the roles of these vectors are symmetric.  Possibly because the simplistic database analogy is flawed, much effort has gone into understanding attention mechanisms further by studying their roles in focused settings, such as in-context learning, masked language tasks, stripped down transformers, bigram statistics, N-gram statistics, pairwise convolutions, and arithmetic factoring.
+
+## Variants
+Many variants of attention implement soft weights, such as
+
+fast weight programmers, or fast weight controllers (1992). A "slow" neural network outputs the "fast" weights of another neural network through outer products. The slow network learns by gradient descent. It was later renamed as "linearized self-attention".
+Bahdanau-style attention, also referred to as additive attention,
+Luong-style attention, which is known as multiplicative attention,
+highly parallelizable self-attention introduced in 2016 as decomposable attention and successfully used in transformers a year later,
+positional attention and factorized positional attention.
+For convolutional neural networks, attention mechanisms can be distinguished by the dimension on which they operate, namely: spatial attention, channel attention, or combinations.
+These variants recombine the encoder-side inputs to redistribute those effects to each target output. Often, a correlation-style matrix of dot products provides the re-weighting coefficients.  In the figures below, W is the matrix of context attention weights, similar to the formula in Core Calculations section above.
+
+## Optimizations
+
+
+## Self-Attention and Transformers
+The major breakthrough came with self-attention, where each element in the input sequence attends to all others, enabling the model to capture global dependencies. This idea was central to the Transformer architecture, which replaced recurrence entirely with attention mechanisms. As a result, Transformers became the foundation for models like BERT, GPT, and T5 (Vaswani et al., 2017).
+
+## Applications
+Attention is widely used in natural language processing, computer vision, and speech recognition. In NLP, it improves context understanding in tasks like question answering and summarization. In vision, visual attention helps models focus on relevant image regions, enhancing object detection and image captioning.
+
+## Mathematical representation
+
+
+## See also
+Recurrent neural network
+seq2seq
+Transformer (deep learning architecture)
+Attention
+Dynamic neural network
+
+## References
+
+
+## External links
+Olah, Chris; Carter, Shan (September 8, 2016). "Attention and Augmented Recurrent Neural Networks". Distill. 1 (9). Distill Working Group. doi:10.23915/distill.00001.
+Dan Jurafsky and James H. Martin (2022) Speech and Language Processing (3rd ed. draft, January 2022), ch. 10.4 Attention and ch. 9.7 Self-Attention Networks: Transformers
+Alex Graves (4 May 2020), Attention and Memory in Deep Learning (video lecture), DeepMind / UCL, via YouTube

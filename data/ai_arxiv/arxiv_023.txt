@@ -1,0 +1,27 @@
+Title: Evaluating the Social Impact of Generative AI Systems in Systems and Society
+
+Abstract:
+Generative AI systems across modalities, ranging from text, image, audio, and
+video, have broad social impacts, but there exists no official standard for
+means of evaluating those impacts and which impacts should be evaluated. We
+move toward a standard approach in evaluating a generative AI system for any
+modality, in two overarching categories: what is able to be evaluated in a base
+system that has no predetermined application and what is able to be evaluated
+in society. We describe specific social impact categories and how to approach
+and conduct evaluations in the base technical system, then in people and
+society. Our framework for a base system defines seven categories of social
+impact: bias, stereotypes, and representational harms; cultural values and
+sensitive content; disparate performance; privacy and data protection;
+financial costs; environmental costs; and data and content moderation labor
+costs. Suggested methods for evaluation apply to all modalities and analyses of
+the limitations of existing evaluations serve as a starting point for necessary
+investment in future evaluations. We offer five overarching categories for what
+is able to be evaluated in society, each with their own subcategories:
+trustworthiness and autonomy; inequality, marginalization, and violence;
+concentration of authority; labor and creativity; and ecosystem and
+environment. Each subcategory includes recommendations for mitigating harm. We
+are concurrently crafting an evaluation repository for the AI research
+community to contribute existing evaluations along the given categories. This
+version will be updated following a CRAFT session at ACM FAccT 2023.
+
+Source: http://arxiv.org/pdf/2306.05949

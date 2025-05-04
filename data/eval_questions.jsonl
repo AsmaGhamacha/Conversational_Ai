@@ -1,0 +1,10 @@
+{"query": "What are common activation functions?", "expected_keywords": ["relu", "sigmoid", "tanh"]}
+{"query": "Explain how convolutional layers work in CNNs", "expected_keywords": ["filters", "feature", "spatial"]}
+{"query": "What problem does regularization solve?", "expected_keywords": ["overfitting", "complexity", "generalization"]}
+{"query": "Why is backpropagation important in training neural networks?", "expected_keywords": ["gradients", "layers", "error"]}
+{"query": "What is the bias-variance tradeoff?", "expected_keywords": ["bias", "variance", "balance"]}
+{"query": "What is the role of tokenization in NLP?", "expected_keywords": ["tokens", "split", "words"]}
+{"query": "What makes transformers better than RNNs?", "expected_keywords": ["parallel", "long-range", "attention"]}
+{"query": "Describe dropout in deep learning", "expected_keywords": ["neurons", "random", "prevent overfitting"]}
+{"query": "How do GANs work?", "expected_keywords": ["generator", "discriminator", "real vs fake"]}
+{"query": "What is the purpose of the Turing Test?", "expected_keywords": ["human", "intelligence", "indistinguishable"]}

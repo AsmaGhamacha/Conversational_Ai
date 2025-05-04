@@ -1,0 +1,28 @@
+Prompt engineering is the process of structuring or crafting an instruction in order to produce the best possible output from a generative artificial intelligence (AI) model.
+A prompt is natural language text describing the task that an AI should perform. A prompt for a text-to-text language model can be a query, a command, or a longer statement including context, instructions, and conversation history. Prompt engineering may involve phrasing a query, specifying a style, choice of words and grammar, providing relevant context, or describing a character for the AI to mimic.
+When communicating with a text-to-image or a text-to-audio model, a typical prompt is a description of a desired output such as "a high-quality photo of an astronaut riding a horse" or "Lo-fi slow BPM electro chill with organic samples". Prompting a text-to-image model may involve adding, removing, emphasizing, and re-ordering words to achieve a desired subject, style, layout, lighting, and aesthetic.
+
+
+## History
+In 2018, researchers first proposed that all previously separate tasks in natural language processing (NLP) could be cast as a question-answering problem over a context. In addition, they trained a first single, joint, multi-task model that would answer any task-related question like "What is the sentiment" or "Translate this sentence to German" or "Who is the president?"
+The AI boom saw an increase in the amount of "prompting technique" to get the model to output the desired outcome and avoid nonsensical output, a process characterized by trial-and-error. After the release of ChatGPT in 2022, prompt engineering was soon seen as an important business skill, albeit one with an uncertain economic future.
+A repository for prompts reported that over 2,000 public prompts for around 170 datasets were available in February 2022. In 2022, the chain-of-thought prompting technique was proposed by Google researchers. In 2023, several text-to-text and text-to-image prompt databases were made publicly available. The Personalized Image-Prompt (PIP) dataset, a generated image-text dataset that has been categorized by 3,115 users, has also been made available publicly in 2024.
+
+## Text-to-text
+Multiple distinct prompt engineering techniques have been published.
+
+## Text-to-image
+In 2022, text-to-image models like DALL-E 2, Stable Diffusion, and Midjourney were released to the public. These models take text prompts as input and use them to generate AI-generated images. Text-to-image models typically do not understand grammar and sentence structure in the same way as large language models, thus may require a different set of prompting techniques.
+Text-to-image models do not natively understand negation. The prompt "a party with no cake" is likely to produce an image including a cake. As an alternative, negative prompts allow a user to indicate, in a separate prompt, which terms should not appear in the resulting image. Techniques such as framing the normal prompt into a sequence-to-sequence language modeling problem can be used to automatically generate an output for the negative prompt.
+
+## Non-text prompts
+Some approaches augment or replace natural language text prompts with non-text input.
+
+## Prompt injection
+Prompt injection is a cybersecurity exploit in which adversaries craft inputs that appear legitimate but are designed to cause unintended behavior in machine learning models, particularly large language models (LLMs). This attack takes advantage of the model's inability to distinguish between developer-defined prompts and user inputs, allowing adversaries to bypass safeguards and influence model behaviour. While LLMs are designed to follow trusted instructions, they can be manipulated into carrying out unintended responses through carefully crafted inputs.
+
+## See also
+Social engineering (security)
+
+
+== References ==

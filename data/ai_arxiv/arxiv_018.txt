@@ -1,0 +1,20 @@
+Title: The Depth-to-Width Interplay in Self-Attention
+
+Abstract:
+Self-attention architectures, which are rapidly pushing the frontier in
+natural language processing, demonstrate a surprising depth-inefficient
+behavior: previous works indicate that increasing the internal representation
+(network width) is just as useful as increasing the number of self-attention
+layers (network depth). We theoretically predict a width-dependent transition
+between depth-efficiency and depth-inefficiency in self-attention. We conduct
+systematic empirical ablations on networks of depths 6 to 48 that clearly
+reveal the theoretically predicted behaviors, and provide explicit quantitative
+suggestions regarding the optimal depth-to-width allocation for a given
+self-attention network size. The race towards beyond 1-Trillion parameter
+language models renders informed guidelines for increasing self-attention depth
+and width in tandem an essential ingredient. Our guidelines elucidate the
+depth-to-width trade-off in self-attention networks of sizes up to the scale of
+GPT3 (which we project to be too deep for its size), and beyond, marking an
+unprecedented width of 30K as optimal for a 1-Trillion parameter network.
+
+Source: http://arxiv.org/pdf/2006.12467

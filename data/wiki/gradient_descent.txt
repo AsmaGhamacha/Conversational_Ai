@@ -1,0 +1,2685 @@
+Gradient descent is a method for unconstrained mathematical optimization. It is a first-order iterative algorithm for minimizing a differentiable multivariate function.
+The idea is to take repeated steps in the opposite direction of the gradient (or approximate gradient) of the function at the current point, because this is the direction of steepest descent. Conversely, stepping in the direction of the gradient will lead to a trajectory that maximizes that function; the procedure is then known as gradient ascent.
+It is particularly useful in machine learning for minimizing the cost or loss function. Gradient descent should not be confused with local search algorithms, although both are iterative methods for optimization.
+Gradient descent is generally attributed to Augustin-Louis Cauchy, who first suggested it in 1847. Jacques Hadamard independently proposed a similar method in 1907. Its convergence properties for non-linear optimization problems were first studied by Haskell Curry in 1944, with the method becoming increasingly well-studied and used in the following decades.
+A simple extension of gradient descent, stochastic gradient descent, serves as the most basic algorithm used for training most deep networks today.
+
+
+## Description
+Gradient descent is based on the observation that if the multi-variable function 
+  
+    
+      
+        F
+        (
+        
+          x
+        
+        )
+      
+    
+    {\displaystyle F(\mathbf {x} )}
+  
+ is defined and differentiable in a neighborhood of a point 
+  
+    
+      
+        
+          a
+        
+      
+    
+    {\displaystyle \mathbf {a} }
+  
+, then 
+  
+    
+      
+        F
+        (
+        
+          x
+        
+        )
+      
+    
+    {\displaystyle F(\mathbf {x} )}
+  
+ decreases fastest if one goes from 
+  
+    
+      
+        
+          a
+        
+      
+    
+    {\displaystyle \mathbf {a} }
+  
+ in the direction of the negative gradient of 
+  
+    
+      
+        F
+      
+    
+    {\displaystyle F}
+  
+ at 
+  
+    
+      
+        
+          a
+        
+        ,
+        −
+        ∇
+        F
+        (
+        
+          a
+        
+        )
+      
+    
+    {\displaystyle \mathbf {a} ,-\nabla F(\mathbf {a} )}
+  
+. It follows that, if
+
+  
+    
+      
+        
+          
+            a
+          
+          
+            n
+            +
+            1
+          
+        
+        =
+        
+          
+            a
+          
+          
+            n
+          
+        
+        −
+        γ
+        ∇
+        F
+        (
+        
+          
+            a
+          
+          
+            n
+          
+        
+        )
+      
+    
+    {\displaystyle \mathbf {a} _{n+1}=\mathbf {a} _{n}-\gamma \nabla F(\mathbf {a} _{n})}
+  
+
+for a small enough step size or learning rate 
+  
+    
+      
+        γ
+        ∈
+        
+          
+            R
+          
+          
+            +
+          
+        
+      
+    
+    {\displaystyle \gamma \in \mathbb {R} _{+}}
+  
+, then  
+  
+    
+      
+        F
+        (
+        
+          
+            a
+            
+              n
+            
+          
+        
+        )
+        ≥
+        F
+        (
+        
+          
+            a
+            
+              n
+              +
+              1
+            
+          
+        
+        )
+      
+    
+    {\displaystyle F(\mathbf {a_{n}} )\geq F(\mathbf {a_{n+1}} )}
+  
+. In other words, the term 
+  
+    
+      
+        γ
+        ∇
+        F
+        (
+        
+          a
+        
+        )
+      
+    
+    {\displaystyle \gamma \nabla F(\mathbf {a} )}
+  
+ is subtracted from 
+  
+    
+      
+        
+          a
+        
+      
+    
+    {\displaystyle \mathbf {a} }
+  
+ because we want to move against the gradient, toward the local minimum. With this observation in mind, one starts with a guess 
+  
+    
+      
+        
+          
+            x
+          
+          
+            0
+          
+        
+      
+    
+    {\displaystyle \mathbf {x} _{0}}
+  
+ for a local minimum of 
+  
+    
+      
+        F
+      
+    
+    {\displaystyle F}
+  
+, and considers the sequence 
+  
+    
+      
+        
+          
+            x
+          
+          
+            0
+          
+        
+        ,
+        
+          
+            x
+          
+          
+            1
+          
+        
+        ,
+        
+          
+            x
+          
+          
+            2
+          
+        
+        ,
+        …
+      
+    
+    {\displaystyle \mathbf {x} _{0},\mathbf {x} _{1},\mathbf {x} _{2},\ldots }
+  
+ such that
+
+  
+    
+      
+        
+          
+            x
+          
+          
+            n
+            +
+            1
+          
+        
+        =
+        
+          
+            x
+          
+          
+            n
+          
+        
+        −
+        
+          γ
+          
+            n
+          
+        
+        ∇
+        F
+        (
+        
+          
+            x
+          
+          
+            n
+          
+        
+        )
+        ,
+         
+        n
+        ≥
+        0.
+      
+    
+    {\displaystyle \mathbf {x} _{n+1}=\mathbf {x} _{n}-\gamma _{n}\nabla F(\mathbf {x} _{n}),\ n\geq 0.}
+  
+
+We have a monotonic sequence
+
+  
+    
+      
+        F
+        (
+        
+          
+            x
+          
+          
+            0
+          
+        
+        )
+        ≥
+        F
+        (
+        
+          
+            x
+          
+          
+            1
+          
+        
+        )
+        ≥
+        F
+        (
+        
+          
+            x
+          
+          
+            2
+          
+        
+        )
+        ≥
+        ⋯
+        ,
+      
+    
+    {\displaystyle F(\mathbf {x} _{0})\geq F(\mathbf {x} _{1})\geq F(\mathbf {x} _{2})\geq \cdots ,}
+  
+
+so the sequence 
+  
+    
+      
+        (
+        
+          
+            x
+          
+          
+            n
+          
+        
+        )
+      
+    
+    {\displaystyle (\mathbf {x} _{n})}
+  
+ converges to the desired local minimum. Note that the value of the step size 
+  
+    
+      
+        γ
+      
+    
+    {\displaystyle \gamma }
+  
+ is allowed to change at every iteration. 
+It is possible to guarantee the convergence to a local minimum under certain assumptions on the function 
+  
+    
+      
+        F
+      
+    
+    {\displaystyle F}
+  
+ (for example, 
+  
+    
+      
+        F
+      
+    
+    {\displaystyle F}
+  
+ convex and 
+  
+    
+      
+        ∇
+        F
+      
+    
+    {\displaystyle \nabla F}
+  
+ Lipschitz) and particular choices of 
+  
+    
+      
+        γ
+      
+    
+    {\displaystyle \gamma }
+  
+. Those include the sequence
+
+  
+    
+      
+        
+          γ
+          
+            n
+          
+        
+        =
+        
+          
+            
+              |
+              
+                
+                  
+                    (
+                    
+                      
+                        
+                          x
+                        
+                        
+                          n
+                        
+                      
+                      −
+                      
+                        
+                          x
+                        
+                        
+                          n
+                          −
+                          1
+                        
+                      
+                    
+                    )
+                  
+                  
+                    T
+                  
+                
+                
+                  [
+                  
+                    ∇
+                    F
+                    (
+                    
+                      
+                        x
+                      
+                      
+                        n
+                      
+                    
+                    )
+                    −
+                    ∇
+                    F
+                    (
+                    
+                      
+                        x
+                      
+                      
+                        n
+                        −
+                        1
+                      
+                    
+                    )
+                  
+                  ]
+                
+              
+              |
+            
+            
+              
+                ‖
+                
+                  ∇
+                  F
+                  (
+                  
+                    
+                      x
+                    
+                    
+                      n
+                    
+                  
+                  )
+                  −
+                  ∇
+                  F
+                  (
+                  
+                    
+                      x
+                    
+                    
+                      n
+                      −
+                      1
+                    
+                  
+                  )
+                
+                ‖
+              
+              
+                2
+              
+            
+          
+        
+      
+    
+    {\displaystyle \gamma _{n}={\frac {\left|\left(\mathbf {x} _{n}-\mathbf {x} _{n-1}\right)^{T}\left[\nabla F(\mathbf {x} _{n})-\nabla F(\mathbf {x} _{n-1})\right]\right|}{\left\|\nabla F(\mathbf {x} _{n})-\nabla F(\mathbf {x} _{n-1})\right\|^{2}}}}
+  
+
+as in the Barzilai-Borwein method, or a sequence 
+  
+    
+      
+        
+          γ
+          
+            n
+          
+        
+      
+    
+    {\displaystyle \gamma _{n}}
+  
+ satisfying the Wolfe conditions (which can be found by using line search). When the function 
+  
+    
+      
+        F
+      
+    
+    {\displaystyle F}
+  
+ is convex, all local minima are also global minima, so in this case gradient descent can converge to the global solution.
+This process is illustrated in the adjacent picture. Here, 
+  
+    
+      
+        F
+      
+    
+    {\displaystyle F}
+  
+ is assumed to be defined on the plane, and that its graph has a bowl shape.  The blue curves are the contour lines, that is, the regions on which the value of 
+  
+    
+      
+        F
+      
+    
+    {\displaystyle F}
+  
+ is constant. A red arrow originating at a point shows the direction of the negative gradient at that point. Note that the (negative) gradient at a point is orthogonal to the contour line going through that point. We see that gradient descent leads us to the bottom of the bowl, that is, to the point where the value of the function 
+  
+    
+      
+        F
+      
+    
+    {\displaystyle F}
+  
+ is minimal.
+
+## Solution of a linear system
+Gradient descent can be used to solve a system of linear equations
+
+  
+    
+      
+        A
+        
+          x
+        
+        −
+        
+          b
+        
+        =
+        0
+      
+    
+    {\displaystyle A\mathbf {x} -\mathbf {b} =0}
+  
+
+reformulated as a quadratic minimization problem.
+If the system matrix 
+  
+    
+      
+        A
+      
+    
+    {\displaystyle A}
+  
+ is real symmetric and positive-definite, an objective function is defined as the quadratic function, with minimization of
+
+  
+    
+      
+        F
+        (
+        
+          x
+        
+        )
+        =
+        
+          
+            x
+          
+          
+            T
+          
+        
+        A
+        
+          x
+        
+        −
+        2
+        
+          
+            x
+          
+          
+            T
+          
+        
+        
+          b
+        
+        ,
+      
+    
+    {\displaystyle F(\mathbf {x} )=\mathbf {x} ^{T}A\mathbf {x} -2\mathbf {x} ^{T}\mathbf {b} ,}
+  
+
+so that
+
+  
+    
+      
+        ∇
+        F
+        (
+        
+          x
+        
+        )
+        =
+        2
+        (
+        A
+        
+          x
+        
+        −
+        
+          b
+        
+        )
+        .
+      
+    
+    {\displaystyle \nabla F(\mathbf {x} )=2(A\mathbf {x} -\mathbf {b} ).}
+  
+
+For a general real matrix 
+  
+    
+      
+        A
+      
+    
+    {\displaystyle A}
+  
+, linear least squares define
+
+  
+    
+      
+        F
+        (
+        
+          x
+        
+        )
+        =
+        
+          
+            ‖
+            
+              A
+              
+                x
+              
+              −
+              
+                b
+              
+            
+            ‖
+          
+          
+            2
+          
+        
+        .
+      
+    
+    {\displaystyle F(\mathbf {x} )=\left\|A\mathbf {x} -\mathbf {b} \right\|^{2}.}
+  
+
+In traditional linear least squares for real 
+  
+    
+      
+        A
+      
+    
+    {\displaystyle A}
+  
+ and 
+  
+    
+      
+        
+          b
+        
+      
+    
+    {\displaystyle \mathbf {b} }
+  
+ the Euclidean norm is used, in which case
+
+  
+    
+      
+        ∇
+        F
+        (
+        
+          x
+        
+        )
+        =
+        2
+        
+          A
+          
+            T
+          
+        
+        (
+        A
+        
+          x
+        
+        −
+        
+          b
+        
+        )
+        .
+      
+    
+    {\displaystyle \nabla F(\mathbf {x} )=2A^{T}(A\mathbf {x} -\mathbf {b} ).}
+  
+
+The line search minimization, finding the locally optimal step size 
+  
+    
+      
+        γ
+      
+    
+    {\displaystyle \gamma }
+  
+ on every iteration, can be performed analytically for quadratic functions, and explicit formulas for the locally optimal 
+  
+    
+      
+        γ
+      
+    
+    {\displaystyle \gamma }
+  
+ are known.
+For example, for real symmetric and positive-definite matrix 
+  
+    
+      
+        A
+      
+    
+    {\displaystyle A}
+  
+, a simple algorithm can be as follows,
+
+  
+    
+      
+        
+          
+            
+              
+              
+                
+                  repeat in the loop:
+                
+              
+            
+            
+              
+              
+                
+                
+                  r
+                
+                :=
+                
+                  b
+                
+                −
+                
+                  A
+                  x
+                
+              
+            
+            
+              
+              
+                
+                γ
+                :=
+                
+                  
+                    
+                      r
+                    
+                    
+                      
+                        T
+                      
+                    
+                  
+                  
+                    r
+                  
+                
+                
+                  /
+                
+                
+                  
+                    
+                      r
+                    
+                    
+                      
+                        T
+                      
+                    
+                  
+                  
+                    A
+                    r
+                  
+                
+              
+            
+            
+              
+              
+                
+                
+                  x
+                
+                :=
+                
+                  x
+                
+                +
+                γ
+                
+                  r
+                
+              
+            
+            
+              
+              
+                
+                
+                  
+                    if 
+                  
+                
+                
+                  
+                    r
+                  
+                  
+                    
+                      T
+                    
+                  
+                
+                
+                  r
+                
+                
+                   is sufficiently small, then exit loop
+                
+              
+            
+            
+              
+              
+                
+                  end repeat loop
+                
+              
+            
+            
+              
+              
+                
+                  return 
+                
+                
+                  x
+                
+                
+                   as the result
+                
+              
+            
+          
+        
+      
+    
+    {\displaystyle {\begin{aligned}&{\text{repeat in the loop:}}\\&\qquad \mathbf {r} :=\mathbf {b} -\mathbf {Ax} \\&\qquad \gamma :={\mathbf {r} ^{\mathsf {T}}\mathbf {r} }/{\mathbf {r} ^{\mathsf {T}}\mathbf {Ar} }\\&\qquad \mathbf {x} :=\mathbf {x} +\gamma \mathbf {r} \\&\qquad {\hbox{if }}\mathbf {r} ^{\mathsf {T}}\mathbf {r} {\text{ is sufficiently small, then exit loop}}\\&{\text{end repeat loop}}\\&{\text{return }}\mathbf {x} {\text{ as the result}}\end{aligned}}}
+  
+
+To avoid multiplying by 
+  
+    
+      
+        A
+      
+    
+    {\displaystyle A}
+  
+ twice per iteration,
+we note that 
+  
+    
+      
+        
+          x
+        
+        :=
+        
+          x
+        
+        +
+        γ
+        
+          r
+        
+      
+    
+    {\displaystyle \mathbf {x} :=\mathbf {x} +\gamma \mathbf {r} }
+  
+ implies 
+  
+    
+      
+        
+          r
+        
+        :=
+        
+          r
+        
+        −
+        γ
+        
+          A
+          r
+        
+      
+    
+    {\displaystyle \mathbf {r} :=\mathbf {r} -\gamma \mathbf {Ar} }
+  
+, which gives the traditional algorithm,
+
+  
+    
+      
+        
+          
+            
+              
+              
+                
+                  r
+                
+                :=
+                
+                  b
+                
+                −
+                
+                  A
+                  x
+                
+              
+            
+            
+              
+              
+                
+                  repeat in the loop:
+                
+              
+            
+            
+              
+              
+                
+                γ
+                :=
+                
+                  
+                    
+                      r
+                    
+                    
+                      
+                        T
+                      
+                    
+                  
+                  
+                    r
+                  
+                
+                
+                  /
+                
+                
+                  
+                    
+                      r
+                    
+                    
+                      
+                        T
+                      
+                    
+                  
+                  
+                    A
+                    r
+                  
+                
+              
+            
+            
+              
+              
+                
+                
+                  x
+                
+                :=
+                
+                  x
+                
+                +
+                γ
+                
+                  r
+                
+              
+            
+            
+              
+              
+                
+                
+                  
+                    if 
+                  
+                
+                
+                  
+                    r
+                  
+                  
+                    
+                      T
+                    
+                  
+                
+                
+                  r
+                
+                
+                   is sufficiently small, then exit loop
+                
+              
+            
+            
+              
+              
+                
+                
+                  r
+                
+                :=
+                
+                  r
+                
+                −
+                γ
+                
+                  A
+                  r
+                
+              
+            
+            
+              
+              
+                
+                  end repeat loop
+                
+              
+            
+            
+              
+              
+                
+                  return 
+                
+                
+                  x
+                
+                
+                   as the result
+                
+              
+            
+          
+        
+      
+    
+    {\displaystyle {\begin{aligned}&\mathbf {r} :=\mathbf {b} -\mathbf {Ax} \\&{\text{repeat in the loop:}}\\&\qquad \gamma :={\mathbf {r} ^{\mathsf {T}}\mathbf {r} }/{\mathbf {r} ^{\mathsf {T}}\mathbf {Ar} }\\&\qquad \mathbf {x} :=\mathbf {x} +\gamma \mathbf {r} \\&\qquad {\hbox{if }}\mathbf {r} ^{\mathsf {T}}\mathbf {r} {\text{ is sufficiently small, then exit loop}}\\&\qquad \mathbf {r} :=\mathbf {r} -\gamma \mathbf {Ar} \\&{\text{end repeat loop}}\\&{\text{return }}\mathbf {x} {\text{ as the result}}\end{aligned}}}
+  
+
+The method is rarely used for solving linear equations, with the conjugate gradient method being one of the most popular alternatives. The number of gradient descent iterations is commonly proportional to the spectral condition number 
+  
+    
+      
+        κ
+        (
+        A
+        )
+      
+    
+    {\displaystyle \kappa (A)}
+  
+ of the system matrix 
+  
+    
+      
+        A
+      
+    
+    {\displaystyle A}
+  
+ (the ratio of the maximum to minimum eigenvalues of 
+  
+    
+      
+        
+          A
+          
+            T
+          
+        
+        A
+      
+    
+    {\displaystyle A^{T}A}
+  
+), while the convergence of conjugate gradient method is typically determined by a square root of the condition number, i.e., is much faster. Both methods can benefit from preconditioning, where gradient descent may require less assumptions on the preconditioner.
+
+## Solution of a non-linear system
+Gradient descent can also be used to solve a system of nonlinear equations. Below is an example that shows how to use the gradient descent to solve for three unknown variables, x1, x2, and x3. This example shows one iteration of the gradient descent.
+Consider the nonlinear system of equations
+
+  
+    
+      
+        
+          
+            {
+            
+              
+                
+                  3
+                  
+                    x
+                    
+                      1
+                    
+                  
+                  −
+                  cos
+                  ⁡
+                  (
+                  
+                    x
+                    
+                      2
+                    
+                  
+                  
+                    x
+                    
+                      3
+                    
+                  
+                  )
+                  −
+                  
+                    
+                      
+                        3
+                        2
+                      
+                    
+                  
+                  =
+                  0
+                
+              
+              
+                
+                  4
+                  
+                    x
+                    
+                      1
+                    
+                    
+                      2
+                    
+                  
+                  −
+                  625
+                  
+                    x
+                    
+                      2
+                    
+                    
+                      2
+                    
+                  
+                  +
+                  2
+                  
+                    x
+                    
+                      2
+                    
+                  
+                  −
+                  1
+                  =
+                  0
+                
+              
+              
+                
+                  exp
+                  ⁡
+                  (
+                  −
+                  
+                    x
+                    
+                      1
+                    
+                  
+                  
+                    x
+                    
+                      2
+                    
+                  
+                  )
+                  +
+                  20
+                  
+                    x
+                    
+                      3
+                    
+                  
+                  +
+                  
+                    
+                      
+                        
+                          10
+                          π
+                          −
+                          3
+                        
+                        3
+                      
+                    
+                  
+                  =
+                  0
+                
+              
+            
+            
+          
+        
+      
+    
+    {\displaystyle {\begin{cases}3x_{1}-\cos(x_{2}x_{3})-{\tfrac {3}{2}}=0\\4x_{1}^{2}-625x_{2}^{2}+2x_{2}-1=0\\\exp(-x_{1}x_{2})+20x_{3}+{\tfrac {10\pi -3}{3}}=0\end{cases}}}
+  
+
+Let us introduce the associated function
+
+  
+    
+      
+        G
+        (
+        
+          x
+        
+        )
+        =
+        
+          
+            [
+            
+              
+                
+                  3
+                  
+                    x
+                    
+                      1
+                    
+                  
+                  −
+                  cos
+                  ⁡
+                  (
+                  
+                    x
+                    
+                      2
+                    
+                  
+                  
+                    x
+                    
+                      3
+                    
+                  
+                  )
+                  −
+                  
+                    
+                      
+                        3
+                        2
+                      
+                    
+                  
+                
+              
+              
+                
+                  4
+                  
+                    x
+                    
+                      1
+                    
+                    
+                      2
+                    
+                  
+                  −
+                  625
+                  
+                    x
+                    
+                      2
+                    
+                    
+                      2
+                    
+                  
+                  +
+                  2
+                  
+                    x
+                    
+                      2
+                    
+                  
+                  −
+                  1
+                
+              
+              
+                
+                  exp
+                  ⁡
+                  (
+                  −
+                  
+                    x
+                    
+                      1
+                    
+                  
+                  
+                    x
+                    
+                      2
+                    
+                  
+                  )
+                  +
+                  20
+                  
+                    x
+                    
+                      3
+                    
+                  
+                  +
+                  
+                    
+                      
+                        
+                          10
+                          π
+                          −
+                          3
+                        
+                        3
+                      
+                    
+                  
+                
+              
+            
+            ]
+          
+        
+        ,
+      
+    
+    {\displaystyle G(\mathbf {x} )={\begin{bmatrix}3x_{1}-\cos(x_{2}x_{3})-{\tfrac {3}{2}}\\4x_{1}^{2}-625x_{2}^{2}+2x_{2}-1\\\exp(-x_{1}x_{2})+20x_{3}+{\tfrac {10\pi -3}{3}}\\\end{bmatrix}},}
+  
+
+where
+
+  
+    
+      
+        
+          x
+        
+        =
+        
+          
+            [
+            
+              
+                
+                  
+                    x
+                    
+                      1
+                    
+                  
+                
+              
+              
+                
+                  
+                    x
+                    
+                      2
+                    
+                  
+                
+              
+              
+                
+                  
+                    x
+                    
+                      3
+                    
+                  
+                
+              
+            
+            ]
+          
+        
+        .
+      
+    
+    {\displaystyle \mathbf {x} ={\begin{bmatrix}x_{1}\\x_{2}\\x_{3}\\\end{bmatrix}}.}
+  
+
+One might now define the objective function
+
+  
+    
+      
+        
+          
+            
+              
+                F
+                (
+                
+                  x
+                
+                )
+              
+              
+                
+                =
+                
+                  
+                    1
+                    2
+                  
+                
+                
+                  G
+                  
+                    
+                      T
+                    
+                  
+                
+                (
+                
+                  x
+                
+                )
+                G
+                (
+                
+                  x
+                
+                )
+              
+            
+            
+              
+              
+                
+                =
+                
+                  
+                    1
+                    2
+                  
+                
+                
+                  [
+                  
+                    
+                      
+                        (
+                        
+                          3
+                          
+                            x
+                            
+                              1
+                            
+                          
+                          −
+                          cos
+                          ⁡
+                          (
+                          
+                            x
+                            
+                              2
+                            
+                          
+                          
+                            x
+                            
+                              3
+                            
+                          
+                          )
+                          −
+                          
+                            
+                              3
+                              2
+                            
+                          
+                        
+                        )
+                      
+                      
+                        2
+                      
+                    
+                    +
+                    
+                      
+                        (
+                        
+                          4
+                          
+                            x
+                            
+                              1
+                            
+                            
+                              2
+                            
+                          
+                          −
+                          625
+                          
+                            x
+                            
+                              2
+                            
+                            
+                              2
+                            
+                          
+                          +
+                          2
+                          
+                            x
+                            
+                              2
+                            
+                          
+                          −
+                          1
+                        
+                        )
+                      
+                      
+                        2
+                      
+                    
+                    +
+                  
+                  
+                
+              
+            
+            
+              
+              
+                
+
+                
+                
+                
+                  
+                  
+                    
+                      (
+                      
+                        exp
+                        ⁡
+                        (
+                        −
+                        
+                          x
+                          
+                            1
+                          
+                        
+                        
+                          x
+                          
+                            2
+                          
+                        
+                        )
+                        +
+                        20
+                        
+                          x
+                          
+                            3
+                          
+                        
+                        +
+                        
+                          
+                            
+                              10
+                              π
+                              −
+                              3
+                            
+                            3
+                          
+                        
+                      
+                      )
+                    
+                    
+                      2
+                    
+                  
+                  ]
+                
+                ,
+              
+            
+          
+        
+      
+    
+    {\displaystyle {\begin{aligned}F(\mathbf {x} )&={\frac {1}{2}}G^{\mathrm {T} }(\mathbf {x} )G(\mathbf {x} )\\&={\frac {1}{2}}\left[\left(3x_{1}-\cos(x_{2}x_{3})-{\frac {3}{2}}\right)^{2}+\left(4x_{1}^{2}-625x_{2}^{2}+2x_{2}-1\right)^{2}+\right.\\&{}\qquad \left.\left(\exp(-x_{1}x_{2})+20x_{3}+{\frac {10\pi -3}{3}}\right)^{2}\right],\end{aligned}}}
+  
+
+which we will attempt to minimize. As an initial guess, let us use
+
+  
+    
+      
+        
+          
+            x
+          
+          
+            (
+            0
+            )
+          
+        
+        =
+        
+          0
+        
+        =
+        
+          
+            [
+            
+              
+                
+                  0
+                
+              
+              
+                
+                  0
+                
+              
+              
+                
+                  0
+                
+              
+            
+            ]
+          
+        
+        .
+      
+    
+    {\displaystyle \mathbf {x} ^{(0)}=\mathbf {0} ={\begin{bmatrix}0\\0\\0\\\end{bmatrix}}.}
+  
+
+We know that
+
+  
+    
+      
+        
+          
+            x
+          
+          
+            (
+            1
+            )
+          
+        
+        =
+        
+          0
+        
+        −
+        
+          γ
+          
+            0
+          
+        
+        ∇
+        F
+        (
+        
+          0
+        
+        )
+        =
+        
+          0
+        
+        −
+        
+          γ
+          
+            0
+          
+        
+        
+          J
+          
+            G
+          
+        
+        (
+        
+          0
+        
+        
+          )
+          
+            
+              T
+            
+          
+        
+        G
+        (
+        
+          0
+        
+        )
+        ,
+      
+    
+    {\displaystyle \mathbf {x} ^{(1)}=\mathbf {0} -\gamma _{0}\nabla F(\mathbf {0} )=\mathbf {0} -\gamma _{0}J_{G}(\mathbf {0} )^{\mathrm {T} }G(\mathbf {0} ),}
+  
+
+where the Jacobian matrix 
+  
+    
+      
+        
+          J
+          
+            G
+          
+        
+      
+    
+    {\displaystyle J_{G}}
+  
+ is given by
+
+  
+    
+      
+        
+          J
+          
+            G
+          
+        
+        (
+        
+          x
+        
+        )
+        =
+        
+          
+            [
+            
+              
+                
+                  3
+                
+                
+                  sin
+                  ⁡
+                  (
+                  
+                    x
+                    
+                      2
+                    
+                  
+                  
+                    x
+                    
+                      3
+                    
+                  
+                  )
+                  
+                    x
+                    
+                      3
+                    
+                  
+                
+                
+                  sin
+                  ⁡
+                  (
+                  
+                    x
+                    
+                      2
+                    
+                  
+                  
+                    x
+                    
+                      3
+                    
+                  
+                  )
+                  
+                    x
+                    
+                      2
+                    
+                  
+                
+              
+              
+                
+                  8
+                  
+                    x
+                    
+                      1
+                    
+                  
+                
+                
+                  −
+                  1250
+                  
+                    x
+                    
+                      2
+                    
+                  
+                  +
+                  2
+                
+                
+                  0
+                
+              
+              
+                
+                  −
+                  
+                    x
+                    
+                      2
+                    
+                  
+                  exp
+                  ⁡
+                  
+                    (
+                    −
+                    
+                      x
+                      
+                        1
+                      
+                    
+                    
+                      x
+                      
+                        2
+                      
+                    
+                    )
+                  
+                
+                
+                  −
+                  
+                    x
+                    
+                      1
+                    
+                  
+                  exp
+                  ⁡
+                  (
+                  −
+                  
+                    x
+                    
+                      1
+                    
+                  
+                  
+                    x
+                    
+                      2
+                    
+                  
+                  )
+                
+                
+                  20
+                
+              
+            
+            ]
+          
+        
+        .
+      
+    
+    {\displaystyle J_{G}(\mathbf {x} )={\begin{bmatrix}3&\sin(x_{2}x_{3})x_{3}&\sin(x_{2}x_{3})x_{2}\\8x_{1}&-1250x_{2}+2&0\\-x_{2}\exp {(-x_{1}x_{2})}&-x_{1}\exp(-x_{1}x_{2})&20\\\end{bmatrix}}.}
+  
+
+We calculate:
+
+  
+    
+      
+        
+          J
+          
+            G
+          
+        
+        (
+        
+          0
+        
+        )
+        =
+        
+          
+            [
+            
+              
+                
+                  3
+                
+                
+                  0
+                
+                
+                  0
+                
+              
+              
+                
+                  0
+                
+                
+                  2
+                
+                
+                  0
+                
+              
+              
+                
+                  0
+                
+                
+                  0
+                
+                
+                  20
+                
+              
+            
+            ]
+          
+        
+        ,
+        
+        G
+        (
+        
+          0
+        
+        )
+        =
+        
+          
+            [
+            
+              
+                
+                  −
+                  2.5
+                
+              
+              
+                
+                  −
+                  1
+                
+              
+              
+                
+                  10.472
+                
+              
+            
+            ]
+          
+        
+        .
+      
+    
+    {\displaystyle J_{G}(\mathbf {0} )={\begin{bmatrix}3&0&0\\0&2&0\\0&0&20\end{bmatrix}},\qquad G(\mathbf {0} )={\begin{bmatrix}-2.5\\-1\\10.472\end{bmatrix}}.}
+  
+
+Thus
+
+  
+    
+      
+        
+          
+            x
+          
+          
+            (
+            1
+            )
+          
+        
+        =
+        
+          0
+        
+        −
+        
+          γ
+          
+            0
+          
+        
+        
+          
+            [
+            
+              
+                
+                  −
+                  7.5
+                
+              
+              
+                
+                  −
+                  2
+                
+              
+              
+                
+                  209.44
+                
+              
+            
+            ]
+          
+        
+        ,
+      
+    
+    {\displaystyle \mathbf {x} ^{(1)}=\mathbf {0} -\gamma _{0}{\begin{bmatrix}-7.5\\-2\\209.44\end{bmatrix}},}
+  
+
+and
+
+  
+    
+      
+        F
+        (
+        
+          0
+        
+        )
+        =
+        0.5
+        
+          (
+          
+            (
+            −
+            2.5
+            
+              )
+              
+                2
+              
+            
+            +
+            (
+            −
+            1
+            
+              )
+              
+                2
+              
+            
+            +
+            (
+            10.472
+            
+              )
+              
+                2
+              
+            
+          
+          )
+        
+        =
+        58.456.
+      
+    
+    {\displaystyle F(\mathbf {0} )=0.5\left((-2.5)^{2}+(-1)^{2}+(10.472)^{2}\right)=58.456.}
+  
+
+Now, a suitable 
+  
+    
+      
+        
+          γ
+          
+            0
+          
+        
+      
+    
+    {\displaystyle \gamma _{0}}
+  
+ must be found such that
+
+  
+    
+      
+        F
+        
+          (
+          
+            
+              x
+            
+            
+              (
+              1
+              )
+            
+          
+          )
+        
+        ≤
+        F
+        
+          (
+          
+            
+              x
+            
+            
+              (
+              0
+              )
+            
+          
+          )
+        
+        =
+        F
+        (
+        
+          0
+        
+        )
+        .
+      
+    
+    {\displaystyle F\left(\mathbf {x} ^{(1)}\right)\leq F\left(\mathbf {x} ^{(0)}\right)=F(\mathbf {0} ).}
+  
+
+This can be done with any of a variety of line search algorithms. One might also simply guess 
+  
+    
+      
+        
+          γ
+          
+            0
+          
+        
+        =
+        0.001
+        ,
+      
+    
+    {\displaystyle \gamma _{0}=0.001,}
+  
+ which gives
+
+  
+    
+      
+        
+          
+            x
+          
+          
+            (
+            1
+            )
+          
+        
+        =
+        
+          
+            [
+            
+              
+                
+                  0.0075
+                
+              
+              
+                
+                  0.002
+                
+              
+              
+                
+                  −
+                  0.20944
+                
+              
+            
+            ]
+          
+        
+        .
+      
+    
+    {\displaystyle \mathbf {x} ^{(1)}={\begin{bmatrix}0.0075\\0.002\\-0.20944\\\end{bmatrix}}.}
+  
+
+Evaluating the objective function at this value, yields
+
+  
+    
+      
+        F
+        
+          (
+          
+            
+              x
+            
+            
+              (
+              1
+              )
+            
+          
+          )
+        
+        =
+        0.5
+        
+          (
+          
+            (
+            −
+            2.48
+            
+              )
+              
+                2
+              
+            
+            +
+            (
+            −
+            1.00
+            
+              )
+              
+                2
+              
+            
+            +
+            (
+            6.28
+            
+              )
+              
+                2
+              
+            
+          
+          )
+        
+        =
+        23.306.
+      
+    
+    {\displaystyle F\left(\mathbf {x} ^{(1)}\right)=0.5\left((-2.48)^{2}+(-1.00)^{2}+(6.28)^{2}\right)=23.306.}
+  
+
+The decrease from 
+  
+    
+      
+        F
+        (
+        
+          0
+        
+        )
+        =
+        58.456
+      
+    
+    {\displaystyle F(\mathbf {0} )=58.456}
+  
+ to the next step's value of
+
+  
+    
+      
+        F
+        
+          (
+          
+            
+              x
+            
+            
+              (
+              1
+              )
+            
+          
+          )
+        
+        =
+        23.306
+      
+    
+    {\displaystyle F\left(\mathbf {x} ^{(1)}\right)=23.306}
+  
+
+is a sizable decrease in the objective function. Further steps would reduce its value further until an approximate solution to the system was found.
+
+## Comments
+Gradient descent works in spaces of any number of dimensions, even in infinite-dimensional ones. In the latter case, the search space is typically a function space, and one calculates the Fréchet derivative of the functional to be minimized to determine the descent direction.
+That gradient descent works in any number of dimensions (finite number at least) can be seen as a consequence of the Cauchy-Schwarz inequality, i.e. the magnitude of the inner (dot) product of two vectors of any dimension is maximized when they are colinear. In the case of gradient descent, that would be when the vector of independent variable adjustments is proportional to the gradient vector of partial derivatives.
+The gradient descent can take many iterations to compute a local minimum with a required accuracy, if the curvature in different directions is very different for the given function. For such functions, preconditioning, which changes the geometry of the space to shape the function level sets like concentric circles, cures the slow convergence. Constructing and applying preconditioning can be computationally expensive, however.
+The gradient descent can be modified via momentums (Nesterov, Polyak, and Frank-Wolfe) and heavy-ball parameters (exponential moving averages and positive-negative momentum). The main examples of such optimizers are Adam, DiffGrad, Yogi, AdaBelief, etc.
+Methods based on Newton's method and inversion of the Hessian using conjugate gradient techniques can be better alternatives. Generally, such methods converge in fewer iterations, but the cost of each iteration is higher. An example is the BFGS method which consists in calculating on every step a matrix by which the gradient vector is multiplied to go into a "better" direction, combined with a more sophisticated line search algorithm, to find the "best" value of 
+  
+    
+      
+        γ
+        .
+      
+    
+    {\displaystyle \gamma .}
+  
+ For extremely large problems, where the computer-memory issues dominate, a limited-memory method such as L-BFGS should be used instead of BFGS or the steepest descent. 
+While it is sometimes possible to substitute gradient descent for a local search algorithm, gradient descent is not in the same family: although it is an iterative method for local optimization, it relies on an objective function’s gradient rather than an explicit exploration of a solution space.
+Gradient descent can be viewed as applying Euler's method for solving ordinary differential equations 
+  
+    
+      
+        
+          x
+          ′
+        
+        (
+        t
+        )
+        =
+        −
+        ∇
+        f
+        (
+        x
+        (
+        t
+        )
+        )
+      
+    
+    {\displaystyle x'(t)=-\nabla f(x(t))}
+  
+ to a gradient flow.  In turn, this equation may be derived as an optimal controller for the control system 
+  
+    
+      
+        
+          x
+          ′
+        
+        (
+        t
+        )
+        =
+        u
+        (
+        t
+        )
+      
+    
+    {\displaystyle x'(t)=u(t)}
+  
+ with 
+  
+    
+      
+        u
+        (
+        t
+        )
+      
+    
+    {\displaystyle u(t)}
+  
+ given in feedback form 
+  
+    
+      
+        u
+        (
+        t
+        )
+        =
+        −
+        ∇
+        f
+        (
+        x
+        (
+        t
+        )
+        )
+      
+    
+    {\displaystyle u(t)=-\nabla f(x(t))}
+  
+.
+
+## Modifications
+Gradient descent can converge to a local minimum and slow down in a neighborhood of a saddle point. Even for unconstrained quadratic minimization, gradient descent develops a zig-zag pattern of subsequent iterates as iterations progress, resulting in slow convergence. Multiple modifications of gradient descent have been proposed to address these deficiencies.
+
+## Extensions
+Gradient descent can be extended to handle constraints by including a projection onto the set of constraints. This method is only feasible when the projection is efficiently computable on a computer. Under suitable assumptions, this method converges.  This method is a specific case of the forward-backward algorithm for monotone inclusions (which includes convex programming and variational inequalities).
+Gradient descent is a special case of mirror descent using the squared Euclidean distance as the given Bregman divergence.
+
+## Theoretical properties
+The properties of gradient descent depend on the properties of the objective function and the variant of gradient descent used (for example, if a line search step is used). The assumptions made affect the convergence rate, and other properties, that can be proven for gradient descent. For example, if the objective is assumed to be strongly convex and lipschitz smooth, then gradient descent converges linearly with a fixed step size. Looser assumptions lead to either weaker convergence guarantees or require a more sophisticated step size selection.
+
+## See also
+
+
+## References
+
+
+## Further reading
+Boyd, Stephen; Vandenberghe, Lieven (2004). "Unconstrained Minimization" (PDF). Convex Optimization. New York: Cambridge University Press. pp. 457–520. ISBN 0-521-83378-7.
+Chong, Edwin K. P.; Żak, Stanislaw H. (2013). "Gradient Methods". An Introduction to Optimization (Fourth ed.). Hoboken: Wiley. pp. 131–160. ISBN 978-1-118-27901-4.
+Himmelblau, David M. (1972). "Unconstrained Minimization Procedures Using Derivatives". Applied Nonlinear Programming. New York: McGraw-Hill. pp. 63–132. ISBN 0-07-028921-2.
+
+## External links
+
+Using gradient descent in C++, Boost, Ublas for linear regression
+Series of Khan Academy videos discusses gradient ascent
+Online book teaching gradient descent in deep neural network context
+Archived at Ghostarchive and the Wayback Machine: "Gradient Descent, How Neural Networks Learn". 3Blue1Brown. October 16, 2017 – via YouTube.
+Handbook of Convergence Theorems for (Stochastic) Gradient Methods

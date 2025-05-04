@@ -1,0 +1,3168 @@
+In machine learning, backpropagation is a gradient estimation method commonly used for training a neural network to compute its parameter updates.
+It is an efficient application of the chain rule to neural networks. Backpropagation computes the gradient of a loss function with respect to the weights of the network for a single input–output example, and does so efficiently, computing the gradient one layer at a time, iterating backward from the last layer to avoid redundant calculations of intermediate terms in the chain rule; this can be derived through dynamic programming.
+Strictly speaking, the term backpropagation refers only to an algorithm for efficiently computing the gradient, not how the gradient is used; but the term is often used loosely to refer to the entire learning algorithm – including how the gradient is used, such as by stochastic gradient descent, or as an intermediate step in a more complicated optimizer, such as Adaptive Moment Estimation. The  local minimum convergence, exploding gradient, vanishing gradient, and weak control of learning rate are main disadvantages of these optimization algorithms. The Hessian and quasi-Hessian optimizers solve only local minimum convergence problem, and the backpropagation works longer. These problems caused researchers to develop hybrid and fractional optimization algorithms. 
+Backpropagation had multiple discoveries and partial discoveries, with a tangled history and terminology. See the history section for details. Some other names for the technique include "reverse mode of automatic differentiation" or "reverse accumulation".
+
+
+## Overview
+Backpropagation computes the gradient in weight space of a feedforward neural network, with respect to a loss function. Denote:
+
+  
+    
+      
+        x
+      
+    
+    {\displaystyle x}
+  
+: input (vector of features)
+
+  
+    
+      
+        y
+      
+    
+    {\displaystyle y}
+  
+: target output
+For classification, output will be a vector of class probabilities (e.g., 
+  
+    
+      
+        (
+        0.1
+        ,
+        0.7
+        ,
+        0.2
+        )
+      
+    
+    {\displaystyle (0.1,0.7,0.2)}
+  
+, and target output is a specific class, encoded by the one-hot/dummy variable (e.g., 
+  
+    
+      
+        (
+        0
+        ,
+        1
+        ,
+        0
+        )
+      
+    
+    {\displaystyle (0,1,0)}
+  
+).
+
+  
+    
+      
+        C
+      
+    
+    {\displaystyle C}
+  
+: loss function or "cost function"
+For classification, this is usually cross-entropy (XC, log loss), while for regression it is usually squared error loss (SEL).
+
+  
+    
+      
+        L
+      
+    
+    {\displaystyle L}
+  
+: the number of layers
+
+  
+    
+      
+        
+          W
+          
+            l
+          
+        
+        =
+        (
+        
+          w
+          
+            j
+            k
+          
+          
+            l
+          
+        
+        )
+      
+    
+    {\displaystyle W^{l}=(w_{jk}^{l})}
+  
+: the weights between layer 
+  
+    
+      
+        l
+        −
+        1
+      
+    
+    {\displaystyle l-1}
+  
+ and 
+  
+    
+      
+        l
+      
+    
+    {\displaystyle l}
+  
+, where 
+  
+    
+      
+        
+          w
+          
+            j
+            k
+          
+          
+            l
+          
+        
+      
+    
+    {\displaystyle w_{jk}^{l}}
+  
+ is the weight between the 
+  
+    
+      
+        k
+      
+    
+    {\displaystyle k}
+  
+-th node in layer 
+  
+    
+      
+        l
+        −
+        1
+      
+    
+    {\displaystyle l-1}
+  
+ and the 
+  
+    
+      
+        j
+      
+    
+    {\displaystyle j}
+  
+-th node in layer 
+  
+    
+      
+        l
+      
+    
+    {\displaystyle l}
+  
+
+  
+    
+      
+        
+          f
+          
+            l
+          
+        
+      
+    
+    {\displaystyle f^{l}}
+  
+: activation functions at layer 
+  
+    
+      
+        l
+      
+    
+    {\displaystyle l}
+  
+
+For classification the last layer is usually the logistic function for binary classification, and softmax (softargmax) for multi-class classification, while for the hidden layers this was traditionally a sigmoid function (logistic function or others) on each node (coordinate), but today is more varied, with rectifier (ramp, ReLU) being common.
+
+  
+    
+      
+        
+          a
+          
+            j
+          
+          
+            l
+          
+        
+      
+    
+    {\displaystyle a_{j}^{l}}
+  
+: activation of the 
+  
+    
+      
+        j
+      
+    
+    {\displaystyle j}
+  
+-th node in layer 
+  
+    
+      
+        l
+      
+    
+    {\displaystyle l}
+  
+.
+In the derivation of backpropagation, other intermediate quantities are used by introducing them as needed below. Bias terms are not treated specially since they correspond to a weight with a fixed input of 1. For backpropagation the specific loss function and activation functions do not matter as long as they and their derivatives can be evaluated efficiently. Traditional activation functions include sigmoid, tanh, and ReLU. Swish, mish, and other activation functions have since been proposed as well.
+The overall network is a combination of function composition and matrix multiplication:
+
+  
+    
+      
+        g
+        (
+        x
+        )
+        :=
+        
+          f
+          
+            L
+          
+        
+        (
+        
+          W
+          
+            L
+          
+        
+        
+          f
+          
+            L
+            −
+            1
+          
+        
+        (
+        
+          W
+          
+            L
+            −
+            1
+          
+        
+        ⋯
+        
+          f
+          
+            1
+          
+        
+        (
+        
+          W
+          
+            1
+          
+        
+        x
+        )
+        ⋯
+        )
+        )
+      
+    
+    {\displaystyle g(x):=f^{L}(W^{L}f^{L-1}(W^{L-1}\cdots f^{1}(W^{1}x)\cdots ))}
+  
+
+For a training set there will be a set of input–output pairs, 
+  
+    
+      
+        
+          {
+          
+            (
+            
+              x
+              
+                i
+              
+            
+            ,
+            
+              y
+              
+                i
+              
+            
+            )
+          
+          }
+        
+      
+    
+    {\displaystyle \left\{(x_{i},y_{i})\right\}}
+  
+. For each input–output pair 
+  
+    
+      
+        (
+        
+          x
+          
+            i
+          
+        
+        ,
+        
+          y
+          
+            i
+          
+        
+        )
+      
+    
+    {\displaystyle (x_{i},y_{i})}
+  
+ in the training set, the loss of the model on that pair is the cost of the difference between the predicted output 
+  
+    
+      
+        g
+        (
+        
+          x
+          
+            i
+          
+        
+        )
+      
+    
+    {\displaystyle g(x_{i})}
+  
+ and the target output 
+  
+    
+      
+        
+          y
+          
+            i
+          
+        
+      
+    
+    {\displaystyle y_{i}}
+  
+:
+
+  
+    
+      
+        C
+        (
+        
+          y
+          
+            i
+          
+        
+        ,
+        g
+        (
+        
+          x
+          
+            i
+          
+        
+        )
+        )
+      
+    
+    {\displaystyle C(y_{i},g(x_{i}))}
+  
+
+Note the distinction: during model evaluation the weights are fixed while the inputs vary (and the target output may be unknown), and the network ends with the output layer (it does not include the loss function). During model training the input–output pair is fixed while the weights vary, and the network ends with the loss function.
+Backpropagation computes the gradient for a fixed input–output pair 
+  
+    
+      
+        (
+        
+          x
+          
+            i
+          
+        
+        ,
+        
+          y
+          
+            i
+          
+        
+        )
+      
+    
+    {\displaystyle (x_{i},y_{i})}
+  
+, where the weights 
+  
+    
+      
+        
+          w
+          
+            j
+            k
+          
+          
+            l
+          
+        
+      
+    
+    {\displaystyle w_{jk}^{l}}
+  
+ can vary. Each individual component of the gradient, 
+  
+    
+      
+        ∂
+        C
+        
+          /
+        
+        ∂
+        
+          w
+          
+            j
+            k
+          
+          
+            l
+          
+        
+        ,
+      
+    
+    {\displaystyle \partial C/\partial w_{jk}^{l},}
+  
+ can be computed by the chain rule; but doing this separately for each weight is inefficient. Backpropagation efficiently computes the gradient by avoiding duplicate calculations and not computing unnecessary intermediate values, by computing the gradient of each layer – specifically the gradient of the weighted input of each layer, denoted by 
+  
+    
+      
+        
+          δ
+          
+            l
+          
+        
+      
+    
+    {\displaystyle \delta ^{l}}
+  
+ – from back to front.
+Informally, the key point is that since the only way a weight in 
+  
+    
+      
+        
+          W
+          
+            l
+          
+        
+      
+    
+    {\displaystyle W^{l}}
+  
+ affects the loss is through its effect on the next layer, and it does so linearly, 
+  
+    
+      
+        
+          δ
+          
+            l
+          
+        
+      
+    
+    {\displaystyle \delta ^{l}}
+  
+ are the only data you need to compute the gradients of the weights at layer 
+  
+    
+      
+        l
+      
+    
+    {\displaystyle l}
+  
+, and then the gradients of weights of previous layer can be computed by 
+  
+    
+      
+        
+          δ
+          
+            l
+            −
+            1
+          
+        
+      
+    
+    {\displaystyle \delta ^{l-1}}
+  
+ and repeated recursively. This avoids inefficiency in two ways. First, it avoids duplication because when computing the gradient at layer 
+  
+    
+      
+        l
+      
+    
+    {\displaystyle l}
+  
+, it is unnecessary to recompute all derivatives on later layers 
+  
+    
+      
+        l
+        +
+        1
+        ,
+        l
+        +
+        2
+        ,
+        …
+      
+    
+    {\displaystyle l+1,l+2,\ldots }
+  
+ each time. Second, it avoids unnecessary intermediate calculations, because at each stage it directly computes the gradient of the weights with respect to the ultimate output (the loss), rather than unnecessarily computing the derivatives of the values of hidden layers with respect to changes in weights 
+  
+    
+      
+        ∂
+        
+          a
+          
+            
+              j
+              ′
+            
+          
+          
+            
+              l
+              ′
+            
+          
+        
+        
+          /
+        
+        ∂
+        
+          w
+          
+            j
+            k
+          
+          
+            l
+          
+        
+      
+    
+    {\displaystyle \partial a_{j'}^{l'}/\partial w_{jk}^{l}}
+  
+.
+Backpropagation can be expressed for simple feedforward networks in terms of matrix multiplication, or more generally in terms of the adjoint graph.
+
+## Matrix multiplication
+For the basic case of a feedforward network, where nodes in each layer are connected only to nodes in the immediate next layer (without skipping any layers), and there is a loss function that computes a scalar loss for the final output, backpropagation can be understood simply by matrix multiplication. Essentially, backpropagation evaluates the expression for the derivative of the cost function as a product of derivatives between each layer from right to left – "backwards" – with the gradient of the weights between each layer being a simple modification of the partial products (the "backwards propagated error").
+Given an input–output pair 
+  
+    
+      
+        (
+        x
+        ,
+        y
+        )
+      
+    
+    {\displaystyle (x,y)}
+  
+, the loss is:
+
+  
+    
+      
+        C
+        (
+        y
+        ,
+        
+          f
+          
+            L
+          
+        
+        (
+        
+          W
+          
+            L
+          
+        
+        
+          f
+          
+            L
+            −
+            1
+          
+        
+        (
+        
+          W
+          
+            L
+            −
+            1
+          
+        
+        ⋯
+        
+          f
+          
+            2
+          
+        
+        (
+        
+          W
+          
+            2
+          
+        
+        
+          f
+          
+            1
+          
+        
+        (
+        
+          W
+          
+            1
+          
+        
+        x
+        )
+        )
+        ⋯
+        )
+        )
+        )
+      
+    
+    {\displaystyle C(y,f^{L}(W^{L}f^{L-1}(W^{L-1}\cdots f^{2}(W^{2}f^{1}(W^{1}x))\cdots )))}
+  
+
+To compute this, one starts with the input 
+  
+    
+      
+        x
+      
+    
+    {\displaystyle x}
+  
+ and works forward; denote the weighted input of each hidden layer as 
+  
+    
+      
+        
+          z
+          
+            l
+          
+        
+      
+    
+    {\displaystyle z^{l}}
+  
+ and the output of hidden layer 
+  
+    
+      
+        l
+      
+    
+    {\displaystyle l}
+  
+ as the activation 
+  
+    
+      
+        
+          a
+          
+            l
+          
+        
+      
+    
+    {\displaystyle a^{l}}
+  
+. For backpropagation, the activation 
+  
+    
+      
+        
+          a
+          
+            l
+          
+        
+      
+    
+    {\displaystyle a^{l}}
+  
+ as well as the derivatives 
+  
+    
+      
+        (
+        
+          f
+          
+            l
+          
+        
+        
+          )
+          ′
+        
+      
+    
+    {\displaystyle (f^{l})'}
+  
+ (evaluated at 
+  
+    
+      
+        
+          z
+          
+            l
+          
+        
+      
+    
+    {\displaystyle z^{l}}
+  
+) must be cached for use during the backwards pass.
+The derivative of the loss in terms of the inputs is given by the chain rule; note that each term is a total derivative, evaluated at the value of the network (at each node) on the input 
+  
+    
+      
+        x
+      
+    
+    {\displaystyle x}
+  
+:
+
+  
+    
+      
+        
+          
+            
+              d
+              C
+            
+            
+              d
+              
+                a
+                
+                  L
+                
+              
+            
+          
+        
+        ⋅
+        
+          
+            
+              d
+              
+                a
+                
+                  L
+                
+              
+            
+            
+              d
+              
+                z
+                
+                  L
+                
+              
+            
+          
+        
+        ⋅
+        
+          
+            
+              d
+              
+                z
+                
+                  L
+                
+              
+            
+            
+              d
+              
+                a
+                
+                  L
+                  −
+                  1
+                
+              
+            
+          
+        
+        ⋅
+        
+          
+            
+              d
+              
+                a
+                
+                  L
+                  −
+                  1
+                
+              
+            
+            
+              d
+              
+                z
+                
+                  L
+                  −
+                  1
+                
+              
+            
+          
+        
+        ⋅
+        
+          
+            
+              d
+              
+                z
+                
+                  L
+                  −
+                  1
+                
+              
+            
+            
+              d
+              
+                a
+                
+                  L
+                  −
+                  2
+                
+              
+            
+          
+        
+        ⋅
+        …
+        ⋅
+        
+          
+            
+              d
+              
+                a
+                
+                  1
+                
+              
+            
+            
+              d
+              
+                z
+                
+                  1
+                
+              
+            
+          
+        
+        ⋅
+        
+          
+            
+              ∂
+              
+                z
+                
+                  1
+                
+              
+            
+            
+              ∂
+              x
+            
+          
+        
+        ,
+      
+    
+    {\displaystyle {\frac {dC}{da^{L}}}\cdot {\frac {da^{L}}{dz^{L}}}\cdot {\frac {dz^{L}}{da^{L-1}}}\cdot {\frac {da^{L-1}}{dz^{L-1}}}\cdot {\frac {dz^{L-1}}{da^{L-2}}}\cdot \ldots \cdot {\frac {da^{1}}{dz^{1}}}\cdot {\frac {\partial z^{1}}{\partial x}},}
+  
+
+where 
+  
+    
+      
+        
+          
+            
+              d
+              
+                a
+                
+                  L
+                
+              
+            
+            
+              d
+              
+                z
+                
+                  L
+                
+              
+            
+          
+        
+      
+    
+    {\displaystyle {\frac {da^{L}}{dz^{L}}}}
+  
+ is a diagonal matrix.
+These terms are: the derivative of the loss function; the derivatives of the activation functions; and the matrices of weights:
+
+  
+    
+      
+        
+          
+            
+              d
+              C
+            
+            
+              d
+              
+                a
+                
+                  L
+                
+              
+            
+          
+        
+        ∘
+        (
+        
+          f
+          
+            L
+          
+        
+        
+          )
+          ′
+        
+        ⋅
+        
+          W
+          
+            L
+          
+        
+        ∘
+        (
+        
+          f
+          
+            L
+            −
+            1
+          
+        
+        
+          )
+          ′
+        
+        ⋅
+        
+          W
+          
+            L
+            −
+            1
+          
+        
+        ∘
+        ⋯
+        ∘
+        (
+        
+          f
+          
+            1
+          
+        
+        
+          )
+          ′
+        
+        ⋅
+        
+          W
+          
+            1
+          
+        
+        .
+      
+    
+    {\displaystyle {\frac {dC}{da^{L}}}\circ (f^{L})'\cdot W^{L}\circ (f^{L-1})'\cdot W^{L-1}\circ \cdots \circ (f^{1})'\cdot W^{1}.}
+  
+
+The gradient 
+  
+    
+      
+        ∇
+      
+    
+    {\displaystyle \nabla }
+  
+ is the transpose of the derivative of the output in terms of the input, so the matrices are transposed and the order of multiplication is reversed, but the entries are the same:
+
+  
+    
+      
+        
+          ∇
+          
+            x
+          
+        
+        C
+        =
+        (
+        
+          W
+          
+            1
+          
+        
+        
+          )
+          
+            T
+          
+        
+        ⋅
+        (
+        
+          f
+          
+            1
+          
+        
+        
+          )
+          ′
+        
+        ∘
+        …
+        ∘
+        (
+        
+          W
+          
+            L
+            −
+            1
+          
+        
+        
+          )
+          
+            T
+          
+        
+        ⋅
+        (
+        
+          f
+          
+            L
+            −
+            1
+          
+        
+        
+          )
+          ′
+        
+        ∘
+        (
+        
+          W
+          
+            L
+          
+        
+        
+          )
+          
+            T
+          
+        
+        ⋅
+        (
+        
+          f
+          
+            L
+          
+        
+        
+          )
+          ′
+        
+        ∘
+        
+          ∇
+          
+            
+              a
+              
+                L
+              
+            
+          
+        
+        C
+        .
+      
+    
+    {\displaystyle \nabla _{x}C=(W^{1})^{T}\cdot (f^{1})'\circ \ldots \circ (W^{L-1})^{T}\cdot (f^{L-1})'\circ (W^{L})^{T}\cdot (f^{L})'\circ \nabla _{a^{L}}C.}
+  
+
+Backpropagation then consists essentially of evaluating this expression from right to left (equivalently, multiplying the previous expression for the derivative from left to right), computing the gradient at each layer on the way; there is an added step, because the gradient of the weights is not just a subexpression: there's an extra multiplication.
+Introducing the auxiliary quantity 
+  
+    
+      
+        
+          δ
+          
+            l
+          
+        
+      
+    
+    {\displaystyle \delta ^{l}}
+  
+ for the partial products (multiplying from right to left), interpreted as the "error at level 
+  
+    
+      
+        l
+      
+    
+    {\displaystyle l}
+  
+" and defined as the gradient of the input values at level 
+  
+    
+      
+        l
+      
+    
+    {\displaystyle l}
+  
+:
+
+  
+    
+      
+        
+          δ
+          
+            l
+          
+        
+        :=
+        (
+        
+          f
+          
+            l
+          
+        
+        
+          )
+          ′
+        
+        ∘
+        (
+        
+          W
+          
+            l
+            +
+            1
+          
+        
+        
+          )
+          
+            T
+          
+        
+        ⋅
+        (
+        
+          f
+          
+            l
+            +
+            1
+          
+        
+        
+          )
+          ′
+        
+        ∘
+        ⋯
+        ∘
+        (
+        
+          W
+          
+            L
+            −
+            1
+          
+        
+        
+          )
+          
+            T
+          
+        
+        ⋅
+        (
+        
+          f
+          
+            L
+            −
+            1
+          
+        
+        
+          )
+          ′
+        
+        ∘
+        (
+        
+          W
+          
+            L
+          
+        
+        
+          )
+          
+            T
+          
+        
+        ⋅
+        (
+        
+          f
+          
+            L
+          
+        
+        
+          )
+          ′
+        
+        ∘
+        
+          ∇
+          
+            
+              a
+              
+                L
+              
+            
+          
+        
+        C
+        .
+      
+    
+    {\displaystyle \delta ^{l}:=(f^{l})'\circ (W^{l+1})^{T}\cdot (f^{l+1})'\circ \cdots \circ (W^{L-1})^{T}\cdot (f^{L-1})'\circ (W^{L})^{T}\cdot (f^{L})'\circ \nabla _{a^{L}}C.}
+  
+
+Note that 
+  
+    
+      
+        
+          δ
+          
+            l
+          
+        
+      
+    
+    {\displaystyle \delta ^{l}}
+  
+ is a vector, of length equal to the number of nodes in level 
+  
+    
+      
+        l
+      
+    
+    {\displaystyle l}
+  
+; each component is interpreted as the "cost attributable to (the value of) that node".
+The gradient of the weights in layer 
+  
+    
+      
+        l
+      
+    
+    {\displaystyle l}
+  
+ is then:
+
+  
+    
+      
+        
+          ∇
+          
+            
+              W
+              
+                l
+              
+            
+          
+        
+        C
+        =
+        
+          δ
+          
+            l
+          
+        
+        (
+        
+          a
+          
+            l
+            −
+            1
+          
+        
+        
+          )
+          
+            T
+          
+        
+        .
+      
+    
+    {\displaystyle \nabla _{W^{l}}C=\delta ^{l}(a^{l-1})^{T}.}
+  
+
+The factor of 
+  
+    
+      
+        
+          a
+          
+            l
+            −
+            1
+          
+        
+      
+    
+    {\displaystyle a^{l-1}}
+  
+ is because the weights 
+  
+    
+      
+        
+          W
+          
+            l
+          
+        
+      
+    
+    {\displaystyle W^{l}}
+  
+ between level 
+  
+    
+      
+        l
+        −
+        1
+      
+    
+    {\displaystyle l-1}
+  
+ and 
+  
+    
+      
+        l
+      
+    
+    {\displaystyle l}
+  
+ affect level 
+  
+    
+      
+        l
+      
+    
+    {\displaystyle l}
+  
+ proportionally to the inputs (activations): the inputs are fixed, the weights vary.
+The 
+  
+    
+      
+        
+          δ
+          
+            l
+          
+        
+      
+    
+    {\displaystyle \delta ^{l}}
+  
+ can easily be computed recursively, going from right to left, as:
+
+  
+    
+      
+        
+          δ
+          
+            l
+            −
+            1
+          
+        
+        :=
+        (
+        
+          f
+          
+            l
+            −
+            1
+          
+        
+        
+          )
+          ′
+        
+        ∘
+        (
+        
+          W
+          
+            l
+          
+        
+        
+          )
+          
+            T
+          
+        
+        ⋅
+        
+          δ
+          
+            l
+          
+        
+        .
+      
+    
+    {\displaystyle \delta ^{l-1}:=(f^{l-1})'\circ (W^{l})^{T}\cdot \delta ^{l}.}
+  
+
+The gradients of the weights can thus be computed using a few matrix multiplications for each level; this is backpropagation.
+Compared with naively computing forwards (using the 
+  
+    
+      
+        
+          δ
+          
+            l
+          
+        
+      
+    
+    {\displaystyle \delta ^{l}}
+  
+ for illustration):
+
+  
+    
+      
+        
+          
+            
+              
+                
+                  δ
+                  
+                    1
+                  
+                
+              
+              
+                
+                =
+                (
+                
+                  f
+                  
+                    1
+                  
+                
+                
+                  )
+                  ′
+                
+                ∘
+                (
+                
+                  W
+                  
+                    2
+                  
+                
+                
+                  )
+                  
+                    T
+                  
+                
+                ⋅
+                (
+                
+                  f
+                  
+                    2
+                  
+                
+                
+                  )
+                  ′
+                
+                ∘
+                ⋯
+                ∘
+                (
+                
+                  W
+                  
+                    L
+                    −
+                    1
+                  
+                
+                
+                  )
+                  
+                    T
+                  
+                
+                ⋅
+                (
+                
+                  f
+                  
+                    L
+                    −
+                    1
+                  
+                
+                
+                  )
+                  ′
+                
+                ∘
+                (
+                
+                  W
+                  
+                    L
+                  
+                
+                
+                  )
+                  
+                    T
+                  
+                
+                ⋅
+                (
+                
+                  f
+                  
+                    L
+                  
+                
+                
+                  )
+                  ′
+                
+                ∘
+                
+                  ∇
+                  
+                    
+                      a
+                      
+                        L
+                      
+                    
+                  
+                
+                C
+              
+            
+            
+              
+                
+                  δ
+                  
+                    2
+                  
+                
+              
+              
+                
+                =
+                (
+                
+                  f
+                  
+                    2
+                  
+                
+                
+                  )
+                  ′
+                
+                ∘
+                ⋯
+                ∘
+                (
+                
+                  W
+                  
+                    L
+                    −
+                    1
+                  
+                
+                
+                  )
+                  
+                    T
+                  
+                
+                ⋅
+                (
+                
+                  f
+                  
+                    L
+                    −
+                    1
+                  
+                
+                
+                  )
+                  ′
+                
+                ∘
+                (
+                
+                  W
+                  
+                    L
+                  
+                
+                
+                  )
+                  
+                    T
+                  
+                
+                ⋅
+                (
+                
+                  f
+                  
+                    L
+                  
+                
+                
+                  )
+                  ′
+                
+                ∘
+                
+                  ∇
+                  
+                    
+                      a
+                      
+                        L
+                      
+                    
+                  
+                
+                C
+              
+            
+            
+              
+              
+                
+                ⋮
+              
+            
+            
+              
+                
+                  δ
+                  
+                    L
+                    −
+                    1
+                  
+                
+              
+              
+                
+                =
+                (
+                
+                  f
+                  
+                    L
+                    −
+                    1
+                  
+                
+                
+                  )
+                  ′
+                
+                ∘
+                (
+                
+                  W
+                  
+                    L
+                  
+                
+                
+                  )
+                  
+                    T
+                  
+                
+                ⋅
+                (
+                
+                  f
+                  
+                    L
+                  
+                
+                
+                  )
+                  ′
+                
+                ∘
+                
+                  ∇
+                  
+                    
+                      a
+                      
+                        L
+                      
+                    
+                  
+                
+                C
+              
+            
+            
+              
+                
+                  δ
+                  
+                    L
+                  
+                
+              
+              
+                
+                =
+                (
+                
+                  f
+                  
+                    L
+                  
+                
+                
+                  )
+                  ′
+                
+                ∘
+                
+                  ∇
+                  
+                    
+                      a
+                      
+                        L
+                      
+                    
+                  
+                
+                C
+                ,
+              
+            
+          
+        
+      
+    
+    {\displaystyle {\begin{aligned}\delta ^{1}&=(f^{1})'\circ (W^{2})^{T}\cdot (f^{2})'\circ \cdots \circ (W^{L-1})^{T}\cdot (f^{L-1})'\circ (W^{L})^{T}\cdot (f^{L})'\circ \nabla _{a^{L}}C\\\delta ^{2}&=(f^{2})'\circ \cdots \circ (W^{L-1})^{T}\cdot (f^{L-1})'\circ (W^{L})^{T}\cdot (f^{L})'\circ \nabla _{a^{L}}C\\&\vdots \\\delta ^{L-1}&=(f^{L-1})'\circ (W^{L})^{T}\cdot (f^{L})'\circ \nabla _{a^{L}}C\\\delta ^{L}&=(f^{L})'\circ \nabla _{a^{L}}C,\end{aligned}}}
+  
+
+There are two key differences with backpropagation:
+
+Computing 
+  
+    
+      
+        
+          δ
+          
+            l
+            −
+            1
+          
+        
+      
+    
+    {\displaystyle \delta ^{l-1}}
+  
+ in terms of 
+  
+    
+      
+        
+          δ
+          
+            l
+          
+        
+      
+    
+    {\displaystyle \delta ^{l}}
+  
+ avoids the obvious duplicate multiplication of layers 
+  
+    
+      
+        l
+      
+    
+    {\displaystyle l}
+  
+ and beyond.
+Multiplying starting from 
+  
+    
+      
+        
+          ∇
+          
+            
+              a
+              
+                L
+              
+            
+          
+        
+        C
+      
+    
+    {\displaystyle \nabla _{a^{L}}C}
+  
+ – propagating the error backwards – means that each step simply multiplies a vector (
+  
+    
+      
+        
+          δ
+          
+            l
+          
+        
+      
+    
+    {\displaystyle \delta ^{l}}
+  
+) by the matrices of weights 
+  
+    
+      
+        (
+        
+          W
+          
+            l
+          
+        
+        
+          )
+          
+            T
+          
+        
+      
+    
+    {\displaystyle (W^{l})^{T}}
+  
+ and derivatives of activations 
+  
+    
+      
+        (
+        
+          f
+          
+            l
+            −
+            1
+          
+        
+        
+          )
+          ′
+        
+      
+    
+    {\displaystyle (f^{l-1})'}
+  
+. By contrast, multiplying forwards, starting from the changes at an earlier layer, means that each multiplication multiplies a matrix by a matrix. This is much more expensive, and corresponds to tracking every possible path of a change in one layer 
+  
+    
+      
+        l
+      
+    
+    {\displaystyle l}
+  
+ forward to changes in the layer 
+  
+    
+      
+        l
+        +
+        2
+      
+    
+    {\displaystyle l+2}
+  
+ (for multiplying 
+  
+    
+      
+        
+          W
+          
+            l
+            +
+            1
+          
+        
+      
+    
+    {\displaystyle W^{l+1}}
+  
+ by 
+  
+    
+      
+        
+          W
+          
+            l
+            +
+            2
+          
+        
+      
+    
+    {\displaystyle W^{l+2}}
+  
+, with additional multiplications for the derivatives of the activations), which unnecessarily computes the intermediate quantities of how weight changes affect the values of hidden nodes.
+
+## Adjoint graph
+For more general graphs, and other advanced variations, backpropagation can be understood in terms of automatic differentiation, where backpropagation is a special case of reverse accumulation (or "reverse mode").
+
+## Intuition
+
+
+## Derivation
+The gradient descent method involves calculating the derivative of the loss function with respect to the weights of the network. This is normally done using backpropagation. Assuming one output neuron, the squared error function is
+
+  
+    
+      
+        E
+        =
+        L
+        (
+        t
+        ,
+        y
+        )
+      
+    
+    {\displaystyle E=L(t,y)}
+  
+
+where
+
+  
+    
+      
+        L
+      
+    
+    {\displaystyle L}
+  
+ is the loss for the output 
+  
+    
+      
+        y
+      
+    
+    {\displaystyle y}
+  
+ and target value 
+  
+    
+      
+        t
+      
+    
+    {\displaystyle t}
+  
+,
+
+  
+    
+      
+        t
+      
+    
+    {\displaystyle t}
+  
+ is the target output for a training sample, and
+
+  
+    
+      
+        y
+      
+    
+    {\displaystyle y}
+  
+ is the actual output of the output neuron.
+For each neuron 
+  
+    
+      
+        j
+      
+    
+    {\displaystyle j}
+  
+, its output 
+  
+    
+      
+        
+          o
+          
+            j
+          
+        
+      
+    
+    {\displaystyle o_{j}}
+  
+ is defined as
+
+  
+    
+      
+        
+          o
+          
+            j
+          
+        
+        =
+        φ
+        (
+        
+          
+            net
+          
+          
+            j
+          
+        
+        )
+        =
+        φ
+        
+          (
+          
+            
+              ∑
+              
+                k
+                =
+                1
+              
+              
+                n
+              
+            
+            
+              w
+              
+                k
+                j
+              
+            
+            
+              x
+              
+                k
+              
+            
+          
+          )
+        
+        ,
+      
+    
+    {\displaystyle o_{j}=\varphi ({\text{net}}_{j})=\varphi \left(\sum _{k=1}^{n}w_{kj}x_{k}\right),}
+  
+
+where the activation function 
+  
+    
+      
+        φ
+      
+    
+    {\displaystyle \varphi }
+  
+ is non-linear and differentiable over the activation region (the ReLU is not differentiable at one point). A historically used activation function is the logistic function:
+
+  
+    
+      
+        φ
+        (
+        z
+        )
+        =
+        
+          
+            1
+            
+              1
+              +
+              
+                e
+                
+                  −
+                  z
+                
+              
+            
+          
+        
+      
+    
+    {\displaystyle \varphi (z)={\frac {1}{1+e^{-z}}}}
+  
+
+which has a convenient derivative of:
+
+  
+    
+      
+        
+          
+            
+              d
+              φ
+            
+            
+              d
+              z
+            
+          
+        
+        =
+        φ
+        (
+        z
+        )
+        (
+        1
+        −
+        φ
+        (
+        z
+        )
+        )
+      
+    
+    {\displaystyle {\frac {d\varphi }{dz}}=\varphi (z)(1-\varphi (z))}
+  
+
+The input 
+  
+    
+      
+        
+          
+            net
+          
+          
+            j
+          
+        
+      
+    
+    {\displaystyle {\text{net}}_{j}}
+  
+ to a neuron is the weighted sum of outputs 
+  
+    
+      
+        
+          o
+          
+            k
+          
+        
+      
+    
+    {\displaystyle o_{k}}
+  
+ of previous neurons. If the neuron is in the first layer after the input layer, the 
+  
+    
+      
+        
+          o
+          
+            k
+          
+        
+      
+    
+    {\displaystyle o_{k}}
+  
+ of the input layer are simply the inputs 
+  
+    
+      
+        
+          x
+          
+            k
+          
+        
+      
+    
+    {\displaystyle x_{k}}
+  
+ to the network. The number of input units to the neuron is 
+  
+    
+      
+        n
+      
+    
+    {\displaystyle n}
+  
+. The variable 
+  
+    
+      
+        
+          w
+          
+            k
+            j
+          
+        
+      
+    
+    {\displaystyle w_{kj}}
+  
+ denotes the weight between neuron 
+  
+    
+      
+        k
+      
+    
+    {\displaystyle k}
+  
+ of the previous layer and neuron 
+  
+    
+      
+        j
+      
+    
+    {\displaystyle j}
+  
+ of the current layer.
+
+## Second-order gradient descent
+Using a Hessian matrix of second-order derivatives of the error function, the Levenberg–Marquardt algorithm often converges faster than first-order gradient descent, especially when the topology of the error function is complicated. It may also find solutions in smaller node counts for which other methods might not converge. The Hessian can be approximated by the Fisher information matrix.
+As an example, consider a simple feedforward network. At the 
+  
+    
+      
+        l
+      
+    
+    {\displaystyle l}
+  
+-th layer, we have
+  
+    
+      
+        
+          x
+          
+            i
+          
+          
+            (
+            l
+            )
+          
+        
+        ,
+        
+        
+          a
+          
+            i
+          
+          
+            (
+            l
+            )
+          
+        
+        =
+        f
+        (
+        
+          x
+          
+            i
+          
+          
+            (
+            l
+            )
+          
+        
+        )
+        ,
+        
+        
+          x
+          
+            i
+          
+          
+            (
+            l
+            +
+            1
+            )
+          
+        
+        =
+        
+          ∑
+          
+            j
+          
+        
+        
+          W
+          
+            i
+            j
+          
+        
+        
+          a
+          
+            j
+          
+          
+            (
+            l
+            )
+          
+        
+      
+    
+    {\displaystyle x_{i}^{(l)},\quad a_{i}^{(l)}=f(x_{i}^{(l)}),\quad x_{i}^{(l+1)}=\sum _{j}W_{ij}a_{j}^{(l)}}
+  
+where 
+  
+    
+      
+        x
+      
+    
+    {\displaystyle x}
+  
+ are the pre-activations, 
+  
+    
+      
+        a
+      
+    
+    {\displaystyle a}
+  
+ are the activations, and 
+  
+    
+      
+        W
+      
+    
+    {\displaystyle W}
+  
+ is the weight matrix. Given a loss function 
+  
+    
+      
+        L
+      
+    
+    {\displaystyle L}
+  
+, the first-order backpropagation states that
+  
+    
+      
+        
+          
+            
+              ∂
+              L
+            
+            
+              ∂
+              
+                a
+                
+                  j
+                
+                
+                  (
+                  l
+                  )
+                
+              
+            
+          
+        
+        =
+        
+          ∑
+          
+            j
+          
+        
+        
+          W
+          
+            i
+            j
+          
+        
+        
+          
+            
+              ∂
+              L
+            
+            
+              ∂
+              
+                x
+                
+                  i
+                
+                
+                  (
+                  l
+                  +
+                  1
+                  )
+                
+              
+            
+          
+        
+        ,
+        
+        
+          
+            
+              ∂
+              L
+            
+            
+              ∂
+              
+                x
+                
+                  j
+                
+                
+                  (
+                  l
+                  )
+                
+              
+            
+          
+        
+        =
+        
+          f
+          ′
+        
+        (
+        
+          x
+          
+            j
+          
+          
+            (
+            l
+            )
+          
+        
+        )
+        
+          
+            
+              ∂
+              L
+            
+            
+              ∂
+              
+                a
+                
+                  j
+                
+                
+                  (
+                  l
+                  )
+                
+              
+            
+          
+        
+      
+    
+    {\displaystyle {\frac {\partial L}{\partial a_{j}^{(l)}}}=\sum _{j}W_{ij}{\frac {\partial L}{\partial x_{i}^{(l+1)}}},\quad {\frac {\partial L}{\partial x_{j}^{(l)}}}=f'(x_{j}^{(l)}){\frac {\partial L}{\partial a_{j}^{(l)}}}}
+  
+and the second-order backpropagation states that
+  
+    
+      
+        
+          
+            
+              
+                ∂
+                
+                  2
+                
+              
+              L
+            
+            
+              ∂
+              
+                a
+                
+                  
+                    j
+                    
+                      1
+                    
+                  
+                
+                
+                  (
+                  l
+                  )
+                
+              
+              ∂
+              
+                a
+                
+                  
+                    j
+                    
+                      2
+                    
+                  
+                
+                
+                  (
+                  l
+                  )
+                
+              
+            
+          
+        
+        =
+        
+          ∑
+          
+            
+              j
+              
+                1
+              
+            
+            
+              j
+              
+                2
+              
+            
+          
+        
+        
+          W
+          
+            
+              i
+              
+                1
+              
+            
+            
+              j
+              
+                1
+              
+            
+          
+        
+        
+          W
+          
+            
+              i
+              
+                2
+              
+            
+            
+              j
+              
+                2
+              
+            
+          
+        
+        
+          
+            
+              
+                ∂
+                
+                  2
+                
+              
+              L
+            
+            
+              ∂
+              
+                x
+                
+                  
+                    i
+                    
+                      1
+                    
+                  
+                
+                
+                  (
+                  l
+                  +
+                  1
+                  )
+                
+              
+              ∂
+              
+                x
+                
+                  
+                    i
+                    
+                      2
+                    
+                  
+                
+                
+                  (
+                  l
+                  +
+                  1
+                  )
+                
+              
+            
+          
+        
+        ,
+        
+        
+          
+            
+              
+                ∂
+                
+                  2
+                
+              
+              L
+            
+            
+              ∂
+              
+                x
+                
+                  
+                    j
+                    
+                      1
+                    
+                  
+                
+                
+                  (
+                  l
+                  )
+                
+              
+              ∂
+              
+                x
+                
+                  
+                    j
+                    
+                      2
+                    
+                  
+                
+                
+                  (
+                  l
+                  )
+                
+              
+            
+          
+        
+        =
+        
+          f
+          ′
+        
+        (
+        
+          x
+          
+            
+              j
+              
+                1
+              
+            
+          
+          
+            (
+            l
+            )
+          
+        
+        )
+        
+          f
+          ′
+        
+        (
+        
+          x
+          
+            
+              j
+              
+                2
+              
+            
+          
+          
+            (
+            l
+            )
+          
+        
+        )
+        
+          
+            
+              
+                ∂
+                
+                  2
+                
+              
+              L
+            
+            
+              ∂
+              
+                a
+                
+                  
+                    j
+                    
+                      1
+                    
+                  
+                
+                
+                  (
+                  l
+                  )
+                
+              
+              ∂
+              
+                a
+                
+                  
+                    j
+                    
+                      2
+                    
+                  
+                
+                
+                  (
+                  l
+                  )
+                
+              
+            
+          
+        
+        +
+        
+          δ
+          
+            
+              j
+              
+                1
+              
+            
+            
+              j
+              
+                2
+              
+            
+          
+        
+        
+          f
+          ″
+        
+        (
+        
+          x
+          
+            
+              j
+              
+                1
+              
+            
+          
+          
+            (
+            l
+            )
+          
+        
+        )
+        
+          
+            
+              ∂
+              L
+            
+            
+              ∂
+              
+                a
+                
+                  
+                    j
+                    
+                      1
+                    
+                  
+                
+                
+                  (
+                  l
+                  )
+                
+              
+            
+          
+        
+      
+    
+    {\displaystyle {\frac {\partial ^{2}L}{\partial a_{j_{1}}^{(l)}\partial a_{j_{2}}^{(l)}}}=\sum _{j_{1}j_{2}}W_{i_{1}j_{1}}W_{i_{2}j_{2}}{\frac {\partial ^{2}L}{\partial x_{i_{1}}^{(l+1)}\partial x_{i_{2}}^{(l+1)}}},\quad {\frac {\partial ^{2}L}{\partial x_{j_{1}}^{(l)}\partial x_{j_{2}}^{(l)}}}=f'(x_{j_{1}}^{(l)})f'(x_{j_{2}}^{(l)}){\frac {\partial ^{2}L}{\partial a_{j_{1}}^{(l)}\partial a_{j_{2}}^{(l)}}}+\delta _{j_{1}j_{2}}f''(x_{j_{1}}^{(l)}){\frac {\partial L}{\partial a_{j_{1}}^{(l)}}}}
+  
+where 
+  
+    
+      
+        δ
+      
+    
+    {\displaystyle \delta }
+  
+ is the Dirac delta symbol.
+Arbitrary-order derivatives in arbitrary computational graphs can be computed with backpropagation, but with more complex expressions for higher orders.
+
+## Loss function
+The loss function is a function that maps values of one or more variables onto a real number intuitively representing some "cost" associated with those values. For backpropagation, the loss function calculates the difference between the network output and its expected output, after a training example has propagated through the network.
+
+## Limitations
+Gradient descent with backpropagation is not guaranteed to find the global minimum of the error function, but only a local minimum; also, it has trouble crossing plateaus in the error function landscape. This issue, caused by the non-convexity of error functions in neural networks, was long thought to be a major drawback, but Yann LeCun et al. argue that in many practical problems, it is not.
+Backpropagation learning does not require normalization of input vectors; however, normalization could improve performance.
+Backpropagation requires the derivatives of activation functions to be known at network design time.
+
+## History
+
+
+## See also
+Artificial neural network
+Neural circuit
+Catastrophic interference
+Ensemble learning
+AdaBoost
+Overfitting
+Neural backpropagation
+Backpropagation through time
+Backpropagation through structure
+Three-factor learning
+
+## Notes
+
+
+## References
+
+
+## Further reading
+Goodfellow, Ian; Bengio, Yoshua; Courville, Aaron (2016). "6.5 Back-Propagation and Other Differentiation Algorithms". Deep Learning. MIT Press. pp. 200–220. ISBN 9780262035613.
+Nielsen, Michael A. (2015). "How the backpropagation algorithm works". Neural Networks and Deep Learning. Determination Press.
+McCaffrey, James (October 2012). "Neural Network Back-Propagation for Programmers". MSDN Magazine.
+Rojas, Raúl (1996). "The Backpropagation Algorithm" (PDF). Neural Networks : A Systematic Introduction. Berlin: Springer. ISBN 3-540-60505-3.
+
+## External links
+Backpropagation neural network tutorial at the Wikiversity
+Bernacki, Mariusz; Włodarczyk, Przemysław (2004). "Principles of training multi-layer neural network using backpropagation".
+Karpathy, Andrej (2016). "Lecture 4: Backpropagation, Neural Networks 1". CS231n. Stanford University. Archived from the original on 2021-12-12 – via YouTube.
+"What is Backpropagation Really Doing?". 3Blue1Brown. November 3, 2017. Archived from the original on 2021-12-12 – via YouTube.
+Putta, Sudeep Raja (2022). "Yet Another Derivation of Backpropagation in Matrix Form".

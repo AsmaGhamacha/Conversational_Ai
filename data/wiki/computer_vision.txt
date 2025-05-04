@@ -1,0 +1,113 @@
+Computer vision tasks include methods for acquiring, processing, analyzing, and understanding digital images, and extraction of high-dimensional data from the real world in order to produce numerical or symbolic information, e.g. in the form of decisions. "Understanding" in this context signifies the transformation of visual images (the input to the retina) into descriptions of the world that make sense to thought processes and can elicit appropriate action. This image understanding can be seen as the disentangling of symbolic information from image data using models constructed with the aid of geometry, physics, statistics, and learning theory.
+The scientific discipline of computer vision is concerned with the theory behind artificial systems that extract information from images. Image data can take many forms, such as video sequences, views from multiple cameras, multi-dimensional data from a 3D scanner, 3D point clouds from LiDaR sensors, or medical scanning devices. The technological discipline of computer vision seeks to apply its theories and models to the construction of computer vision systems.
+Subdisciplines of computer vision include scene reconstruction, object detection, event detection, activity recognition, video tracking, object recognition, 3D pose estimation, learning, indexing, motion estimation, visual servoing, 3D scene modeling, and image restoration.
+
+
+## Definition
+Computer vision is an interdisciplinary field that deals with how computers can be made to gain high-level understanding from digital images or videos. From the perspective of engineering, it seeks to automate tasks that the human visual system can do. "Computer vision is concerned with the automatic extraction, analysis, and understanding of useful information from a single image or a sequence of images. It involves the development of a theoretical and algorithmic basis to achieve automatic visual understanding." As a scientific discipline, computer vision is concerned with the theory behind artificial systems that extract information from images. The image data can take many forms, such as video sequences, views from multiple cameras, or multi-dimensional data from a medical scanner. As a technological discipline, computer vision seeks to apply its theories and models for the construction of computer vision systems. Machine vision refers to a systems engineering discipline, especially in the context of factory automation. In more recent times, the terms computer vision and machine vision have converged to a greater degree.: 13
+
+## History
+In the late 1960s, computer vision began at universities that were pioneering artificial intelligence. It was meant to mimic the human visual system as a stepping stone to endowing robots with intelligent behavior. In 1966, it was believed that this could be achieved through an undergraduate summer project, by attaching a camera to a computer and having it "describe what it saw".
+What distinguished computer vision from the prevalent field of digital image processing at that time was a desire to extract three-dimensional structure from images with the goal of achieving full scene understanding. Studies in the 1970s formed the early foundations for many of the computer vision algorithms that exist today, including extraction of edges from images, labeling of lines, non-polyhedral and polyhedral modeling, representation of objects as interconnections of smaller structures, optical flow, and motion estimation.
+The next decade saw studies based on more rigorous mathematical analysis and quantitative aspects of computer vision. These include the concept of scale-space, the inference of shape from various cues such as shading, texture and focus, and contour models known as snakes. Researchers also realized that many of these mathematical concepts could be treated within the same optimization framework as regularization and Markov random fields.
+By the 1990s, some of the previous research topics became more active than others. Research in projective 3-D reconstructions led to better understanding of camera calibration. With the advent of optimization methods for camera calibration, it was realized that a lot of the ideas were already explored in bundle adjustment theory from the field of photogrammetry. This led to methods for sparse 3-D reconstructions of scenes from multiple images. Progress was made on the dense stereo correspondence problem and further multi-view stereo techniques. At the same time, variations of graph cut were used to solve image segmentation. This decade also marked the first time statistical learning techniques were used in practice to recognize faces in images (see Eigenface). Toward the end of the 1990s, a significant change came about with the increased interaction between the fields of computer graphics and computer vision. This included image-based rendering, image morphing, view interpolation, panoramic image stitching and early light-field rendering.
+Recent work has seen the resurgence of feature-based methods used in conjunction with machine learning techniques and complex optimization frameworks. 
+The advancement of Deep Learning techniques has brought further life to the field of computer vision. The accuracy of deep learning algorithms on several benchmark computer vision data sets for tasks ranging from classification, segmentation and optical flow has surpassed prior methods.
+
+## Related fields
+
+
+## Applications
+Applications range from tasks such as industrial machine vision systems which, say, inspect bottles speeding by on a production line, to research into artificial intelligence and computers or robots that can comprehend the world around them. The computer vision and machine vision fields have significant overlap. Computer vision covers the core technology of automated image analysis which is used in many fields. Machine vision usually refers to a process of combining automated image analysis with other methods and technologies to provide automated inspection and robot guidance in industrial applications. In many computer-vision applications, computers are pre-programmed to solve a particular task, but methods based on learning are now becoming increasingly common. Examples of applications of computer vision include systems for:
+
+Automatic inspection, e.g., in manufacturing applications;
+Assisting humans in identification tasks, e.g., a species identification system;
+Controlling processes, e.g., an industrial robot;
+Detecting events, e.g., for visual surveillance or people counting, e.g., in the restaurant industry;
+Interaction, e.g., as the input to a device for computer-human interaction;
+monitoring agricultural crops, e.g. an open-source vision transformers model  has been developed to help farmers automatically detect strawberry diseases with 98.4% accuracy.
+Modeling objects or environments, e.g., medical image analysis or topographical modeling;
+Navigation, e.g., by an autonomous vehicle or mobile robot;
+Organizing information, e.g., for indexing databases of images and image sequences.
+Tracking surfaces or planes in 3D coordinates for allowing Augmented Reality experiences.
+Analyzing the condition of facilities in industry or construction.
+Automatic real-time lip-reading for devices and apps to assist people with disabilities.
+
+## Typical tasks
+Each of the application areas described above employ a range of computer vision tasks; more or less well-defined measurement problems or processing problems, which can be solved using a variety of methods. Some examples of typical computer vision tasks are presented below.
+Computer vision tasks include methods for acquiring, processing, analyzing and understanding digital images, and extraction of high-dimensional data from the real world in order to produce numerical or symbolic information, e.g., in the forms of decisions. Understanding in this context means the transformation of visual images (the input of the retina) into descriptions of the world that can interface with other thought processes and elicit appropriate action. This image understanding can be seen as the disentangling of symbolic information from image data using models constructed with the aid of geometry, physics, statistics, and learning theory.
+
+## System methods
+The organization of a computer vision system is highly application-dependent. Some systems are stand-alone applications that solve a specific measurement or detection problem, while others constitute a sub-system of a larger design which, for example, also contains sub-systems for control of mechanical actuators, planning, information databases, man-machine interfaces, etc. The specific implementation of a computer vision system also depends on whether its functionality is pre-specified or if some part of it can be learned or modified during operation. Many functions are unique to the application. There are, however, typical functions that are found in many computer vision systems.
+
+Image acquisition – A digital image is produced by one or several image sensors, which, besides various types of light-sensitive cameras, include range sensors, tomography devices, radar, ultra-sonic cameras, etc. Depending on the type of sensor, the resulting image data is an ordinary 2D image, a 3D volume, or an image sequence. The pixel values typically correspond to light intensity in one or several spectral bands (gray images or colour images) but can also be related to various physical measures, such as depth, absorption or reflectance of sonic or electromagnetic waves, or magnetic resonance imaging.
+Pre-processing – Before a computer vision method can be applied to image data in order to extract some specific piece of information, it is usually necessary to process the data in order to ensure that it satisfies certain assumptions implied by the method. Examples are:
+Re-sampling to ensure that the image coordinate system is correct.
+Noise reduction to ensure that sensor noise does not introduce false information.
+Contrast enhancement to ensure that relevant information can be detected.
+Scale space representation to enhance image structures at locally appropriate scales.
+Feature extraction – Image features at various levels of complexity are extracted from the image data. Typical examples of such features are:
+Lines, edges and ridges.
+Localized interest points such as corners, blobs or points.
+More complex features may be related to texture, shape, or motion.
+Detection/segmentation – At some point in the processing, a decision is made about which image points or regions of the image are relevant for further processing. Examples are:
+Selection of a specific set of interest points.
+Segmentation of one or multiple image regions that contain a specific object of interest.
+Segmentation of image into nested scene architecture comprising foreground, object groups, single objects or salient object parts (also referred to as spatial-taxon scene hierarchy), while the visual salience is often implemented as spatial and temporal attention.
+Segmentation or co-segmentation of one or multiple videos into a series of per-frame foreground masks while maintaining its temporal semantic continuity.
+High-level processing – At this step, the input is typically a small set of data, for example, a set of points or an image region, which is assumed to contain a specific object. The remaining processing deals with, for example:
+Verification that the data satisfies model-based and application-specific assumptions.
+Estimation of application-specific parameters, such as object pose or object size.
+Image recognition – classifying a detected object into different categories.
+Image registration – comparing and combining two different views of the same object.
+Decision making Making the final decision required for the application, for example:
+Pass/fail on automatic inspection applications.
+Match/no-match in recognition applications.
+Flag for further human review in medical, military, security and recognition applications.
+
+## Hardware
+There are many kinds of computer vision systems; however, all of them contain these basic elements: a power source, at least one image acquisition device (camera, ccd, etc.), a processor, and control and communication cables or some kind of wireless interconnection mechanism. In addition, a practical vision system contains software, as well as a display in order to monitor the system. Vision systems for inner spaces, as most industrial ones, contain an illumination system and may be placed in a controlled environment. Furthermore, a completed system includes many accessories, such as camera supports, cables, and connectors.
+Most computer vision systems use visible-light cameras passively viewing a scene at frame rates of at most 60 frames per second (usually far slower).
+A few computer vision systems use image-acquisition hardware with active illumination or something other than visible light or both, such as structured-light 3D scanners, thermographic cameras, hyperspectral imagers, radar imaging, lidar scanners, magnetic resonance images, side-scan sonar, synthetic aperture sonar, etc. Such hardware captures "images" that are then processed often using the same computer vision algorithms used to process visible-light images.
+While traditional broadcast and consumer video systems operate at a rate of 30 frames per second, advances in digital signal processing and consumer graphics hardware has made high-speed image acquisition, processing, and display possible for real-time systems on the order of hundreds to thousands of frames per second. For applications in robotics, fast, real-time video systems are critically important and often can simplify the processing needed for certain algorithms. When combined with a high-speed projector, fast image acquisition allows 3D measurement and feature tracking to be realized.
+Egocentric vision systems are composed of a wearable camera that automatically take pictures from a first-person perspective.
+As of 2016, vision processing units are emerging as a new class of processors to complement CPUs and graphics processing units (GPUs) in this role.
+
+## See also
+
+
+## References
+
+
+## Further reading
+James E. Dobson (2023). The Birth of Computer Vision. University of Minnesota Press. ISBN 978-1-5179-1421-9.
+David Marr (1982). Vision. W. H. Freeman and Company. ISBN 978-0-7167-1284-8.
+Azriel Rosenfeld; Avinash Kak (1982). Digital Picture Processing. Academic Press. ISBN 978-0-12-597301-4.
+Barghout, Lauren; Lawrence W. Lee (2003). Perceptual information processing system. U.S. Patent Application 10/618,543. ISBN 978-0-262-08159-7.
+Berthold K.P. Horn (1986). Robot Vision. MIT Press. ISBN 978-0-262-08159-7.
+Michael C. Fairhurst (1988). Computer Vision for robotic systems. Prentice Hall. ISBN 978-0-13-166919-2.
+Olivier Faugeras (1993). Three-Dimensional Computer Vision, A Geometric Viewpoint. MIT Press. ISBN 978-0-262-06158-2.
+Tony Lindeberg (1994). Scale-Space Theory in Computer Vision. Springer. ISBN 978-0-7923-9418-1.
+James L. Crowley; Henrik I. Christensen, eds. (1995). Vision as Process. Springer-Verlag. ISBN 978-3-540-58143-7.
+Gösta H. Granlund; Hans Knutsson (1995). Signal Processing for Computer Vision. Kluwer Academic Publisher. ISBN 978-0-7923-9530-0.
+Reinhard Klette; Karsten Schluens; Andreas Koschan (1998). Computer Vision – Three-Dimensional Data from Images. Springer, Singapore. ISBN 978-981-3083-71-4.
+Emanuele Trucco; Alessandro Verri (1998). Introductory Techniques for 3-D Computer Vision. Prentice Hall. ISBN 978-0-13-261108-4.
+Bernd Jähne (2002). Digital Image Processing. Springer. ISBN 978-3-540-67754-3.
+Richard Hartley and Andrew Zisserman (2003). Multiple View Geometry in Computer Vision. Cambridge University Press. ISBN 978-0-521-54051-3.
+Gérard Medioni; Sing Bing Kang (2004). Emerging Topics in Computer Vision. Prentice Hall. ISBN 978-0-13-101366-7.
+R. Fisher; K Dawson-Howe; A. Fitzgibbon; C. Robertson; E. Trucco (2005). Dictionary of Computer Vision and Image Processing. John Wiley. ISBN 978-0-470-01526-1.
+Nikos Paragios and Yunmei Chen and Olivier Faugeras (2005). Handbook of Mathematical Models in Computer Vision. Springer. ISBN 978-0-387-26371-7.
+Wilhelm Burger; Mark J. Burge (2007). Digital Image Processing: An Algorithmic Approach Using Java. Springer. ISBN 978-1-84628-379-6. Archived from the original on 2014-05-17. Retrieved 2007-06-13.
+Pedram Azad; Tilo Gockel; Rüdiger Dillmann (2008). Computer Vision – Principles and Practice. Elektor International Media BV. ISBN 978-0-905705-71-2.
+Richard Szeliski (2010). Computer Vision: Algorithms and Applications. Springer-Verlag. ISBN 978-1848829343.
+J. R. Parker (2011). Algorithms for Image Processing and Computer Vision (2nd ed.). Wiley. ISBN 978-0470643853.
+Richard J. Radke (2013). Computer Vision for Visual Effects. Cambridge University Press. ISBN 978-0-521-76687-6.
+Nixon, Mark; Aguado, Alberto (2019). Feature Extraction and Image Processing for Computer Vision (4th ed.). Academic Press. ISBN 978-0128149768.
+
+## External links
+USC Iris computer vision conference list
+Computer vision papers on the web – a complete list of papers of the most relevant computer vision conferences.
+Computer Vision Online Archived 2011-11-30 at the Wayback Machine – news, source code, datasets and job offers related to computer vision
+CVonline – Bob Fisher's Compendium of Computer Vision.
+British Machine Vision Association – supporting computer vision research within the UK via the BMVC and MIUA conferences, Annals of the BMVA (open-source journal), BMVA Summer School and one-day meetings
+Computer Vision Container, Joe Hoeller GitHub: Widely adopted open-source container for GPU accelerated computer vision applications. Used by researchers, universities, private companies, as well as the U.S. Gov't.

@@ -1,0 +1,16 @@
+Title: Interscript: A dataset for interactive learning of scripts through error feedback
+
+Abstract:
+How can an end-user provide feedback if a deployed structured prediction
+model generates inconsistent output, ignoring the structural complexity of
+human language? This is an emerging topic with recent progress in synthetic or
+constrained settings, and the next big leap would require testing and tuning
+models in real-world settings. We present a new dataset, Interscript,
+containing user feedback on a deployed model that generates complex everyday
+tasks. Interscript contains 8,466 data points -- the input is a possibly
+erroneous script and a user feedback, and the output is a modified script. We
+posit two use-cases of \ours that might significantly advance the
+state-of-the-art in interactive learning. The dataset is available at:
+https://github.com/allenai/interscript.
+
+Source: http://arxiv.org/pdf/2112.07867

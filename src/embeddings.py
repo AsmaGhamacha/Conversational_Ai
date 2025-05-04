@@ -9,15 +9,23 @@
 import os
 from sentence_transformers import SentenceTransformer
 
-def load_documents(data_path='data/'):
+def load_documents():
+    folders = [
+        "data/wiki",
+        "data/ai_arxiv"
+    ]
+    
     documents = []
-    for filename in os.listdir(data_path):
-        if filename.endswith('.txt'):
-            with open(os.path.join(data_path, filename), 'r', encoding='utf-8') as f:
-                documents.append(f.read())
+    for folder in folders:
+        for filename in os.listdir(folder):
+            if filename.endswith(".txt"):
+                with open(os.path.join(folder, filename), "r", encoding="utf-8") as f:
+                    documents.append(f.read())
+    
+    print(f"[LOADED]  {len(documents)} documents from {len(folders)} folders.")
     return documents
 
-def embed_documents(documents, model_name='all-MiniLM-L6-v2'):
+def embed_documents(documents, model_name='thenlper/gte-small'):
     model = SentenceTransformer(model_name)
     embeddings = model.encode(documents, show_progress_bar=True)
     return embeddings

@@ -1,0 +1,11 @@
+Timestamp,Query,Correct,Response Time (s)
+2025-05-04 17:06:26,"What are common activation functions?",True,7.02
+2025-05-04 17:06:38,"Explain how convolutional layers work in CNNs",True,11.46
+2025-05-04 17:06:42,"What problem does regularization solve?",False,4.55
+2025-05-04 17:06:49,"Why is backpropagation important in training neural networks?",False,6.64
+2025-05-04 17:06:55,"What is the bias-variance tradeoff?",True,6.23
+2025-05-04 17:07:03,"What is the role of tokenization in NLP?",False,7.74
+2025-05-04 17:07:10,"What makes transformers better than RNNs?",True,7.43
+2025-05-04 17:07:15,"Describe dropout in deep learning",True,4.73
+2025-05-04 17:07:23,"How do GANs work?",False,8.44
+2025-05-04 17:07:29,"What is the purpose of the Turing Test?",True,5.77

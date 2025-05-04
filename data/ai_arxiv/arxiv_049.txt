@@ -1,0 +1,19 @@
+Title: One-Shot Learning from a Demonstration with Hierarchical Latent Language
+
+Abstract:
+Humans have the capability, aided by the expressive compositionality of their
+language, to learn quickly by demonstration. They are able to describe unseen
+task-performing procedures and generalize their execution to other contexts. In
+this work, we introduce DescribeWorld, an environment designed to test this
+sort of generalization skill in grounded agents, where tasks are linguistically
+and procedurally composed of elementary concepts. The agent observes a single
+task demonstration in a Minecraft-like grid world, and is then asked to carry
+out the same task in a new map. To enable such a level of generalization, we
+propose a neural agent infused with hierarchical latent language--both at the
+level of task inference and subtask planning. Our agent first generates a
+textual description of the demonstrated unseen task, then leverages this
+description to replicate it. Through multiple evaluation scenarios and a suite
+of generalization tests, we find that agents that perform text-based inference
+are better equipped for the challenge under a random split of tasks.
+
+Source: http://arxiv.org/pdf/2203.04806

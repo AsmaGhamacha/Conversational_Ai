@@ -1,0 +1,44 @@
+Speech recognition is an interdisciplinary subfield of computer science and computational linguistics that develops methodologies and technologies that enable the recognition and translation of spoken language into text by computers. It is also known as automatic speech recognition (ASR), computer speech recognition or speech-to-text (STT). It incorporates knowledge and research in the computer science, linguistics and computer engineering fields. The reverse process is speech synthesis.
+Some speech recognition systems require "training" (also called "enrollment") where an individual speaker reads text or isolated vocabulary into the system. The system analyzes the person's specific voice and uses it to fine-tune the recognition of that person's speech, resulting in increased accuracy. Systems that do not use training are called "speaker-independent" systems. Systems that use training are called "speaker dependent".
+Speech recognition applications include voice user interfaces such as voice dialing (e.g. "call home"), call routing (e.g. "I would like to make a collect call"), domotic appliance control, search key words (e.g. find a podcast where particular words were spoken), simple data entry (e.g., entering a credit card number), preparation of structured documents (e.g. a radiology report), determining speaker characteristics, speech-to-text processing (e.g., word processors or emails), and aircraft (usually termed direct voice input). Automatic pronunciation assessment is used in education such as for spoken language learning.
+The term voice recognition or speaker identification refers to identifying the speaker, rather than what they are saying. Recognizing the speaker can simplify the task of translating speech in systems that have been trained on a specific person's voice or it can be used to authenticate or verify the identity of a speaker as part of a security process.
+From the technology perspective, speech recognition has a long history with several waves of major innovations. Most recently, the field has benefited from advances in deep learning and big data. The advances are evidenced not only by the surge of academic papers published in the field, but more importantly by the worldwide industry adoption of a variety of deep learning methods in designing and deploying speech recognition systems.
+
+
+## History
+The key areas of growth were: vocabulary size, speaker independence, and processing speed.
+
+## Models, methods, and algorithms
+Both acoustic modeling and language modeling are important parts of modern statistically based speech recognition algorithms. Hidden Markov models (HMMs) are widely used in many systems. Language modeling is also used in many other natural language processing applications such as document classification or statistical machine translation.
+
+## Applications
+
+
+## Performance
+The performance of speech recognition systems is usually evaluated in terms of accuracy and speed. Accuracy is usually rated with word error rate (WER), whereas speed is measured with the real time factor. Other measures of accuracy include Single Word Error Rate (SWER) and Command Success Rate (CSR).
+Speech recognition by machine is a very complex problem, however. Vocalizations vary in terms of accent, pronunciation, articulation, roughness, nasality, pitch, volume, and speed. Speech is distorted by a background noise and echoes, electrical characteristics. Accuracy of speech recognition may vary with the following:
+
+Vocabulary size and confusability
+Speaker dependence versus independence
+Isolated, discontinuous or continuous speech
+Task and language constraints
+Read versus spontaneous speech
+Adverse conditions
+
+## Further information
+
+
+## See also
+
+
+## References
+
+
+## Further reading
+Cole, Ronald; Mariani, Joseph; Uszkoreit, Hans; Varile, Giovanni Battista; Zaenen, Annie; Zampolli; Zue, Victor, eds. (1997). Survey of the state of the art in human language technology. Cambridge Studies in Natural Language Processing. Vol. XII–XIII. Cambridge University Press. ISBN 978-0-521-59277-2.
+Junqua, J.-C.; Haton, J.-P. (1995). Robustness in Automatic Speech Recognition: Fundamentals and Applications. Kluwer Academic Publishers. ISBN 978-0-7923-9646-8.
+Karat, Clare-Marie; Vergo, John; Nahamoo, David (2007). "Conversational Interface Technologies". In Sears, Andrew; Jacko, Julie A. (eds.). The Human-Computer Interaction Handbook: Fundamentals, Evolving Technologies, and Emerging Applications (Human Factors and Ergonomics). Lawrence Erlbaum Associates Inc. ISBN 978-0-8058-5870-9.
+Pieraccini, Roberto (2012). The Voice in the Machine. Building Computers That Understand Speech. The MIT Press. ISBN 978-0262016858.
+Pirani, Giancarlo, ed. (2013). Advanced algorithms and architectures for speech understanding. Springer Science & Business Media. ISBN 978-3-642-84341-9.
+Signer, Beat; Hoste, Lode (December 2013). "SpeeG2: A Speech- and Gesture-based Interface for Efficient Controller-free Text Entry". Proceedings of ICMI 2013. 15th International Conference on Multimodal Interaction. Sydney, Australia.
+Woelfel, Matthias; McDonough, John (26 May 2009). Distant Speech Recognition. Wiley. ISBN 978-0470517048.

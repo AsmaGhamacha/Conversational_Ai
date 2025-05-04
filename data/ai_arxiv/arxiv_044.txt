@@ -1,0 +1,17 @@
+Title: NL-Augmenter: A Framework for Task-Sensitive Natural Language Augmentation
+
+Abstract:
+Data augmentation is an important component in the robustness evaluation of
+models in natural language processing (NLP) and in enhancing the diversity of
+the data they are trained on. In this paper, we present NL-Augmenter, a new
+participatory Python-based natural language augmentation framework which
+supports the creation of both transformations (modifications to the data) and
+filters (data splits according to specific features). We describe the framework
+and an initial set of 117 transformations and 23 filters for a variety of
+natural language tasks. We demonstrate the efficacy of NL-Augmenter by using
+several of its transformations to analyze the robustness of popular natural
+language models. The infrastructure, datacards and robustness analysis results
+are available publicly on the NL-Augmenter repository
+(https://github.com/GEM-benchmark/NL-Augmenter).
+
+Source: http://arxiv.org/pdf/2112.02721
