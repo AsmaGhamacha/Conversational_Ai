@@ -179,3 +179,8 @@ cython_debug/
 # Local configuration file
 ai_agent/
 .vscode/
+
+
+cached/
+logs/
+__pycache__/
