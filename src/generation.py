@@ -15,7 +15,8 @@ class Generator:
         self.model = model_name
         self.api_key = st.secrets["TOGETHER_API_KEY"]
 
-
+        print("Model in use:", self.model)
+        
         if not self.api_key:
             raise ValueError("TOGETHER_API_KEY not set in environment variables.")
 
