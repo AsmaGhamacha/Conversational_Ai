@@ -10,7 +10,7 @@ import os
 import requests
 
 class Generator:
-    def __init__(self, model_name="meta-llama/Meta-Llama-3-8B-Instruct"):
+    def __init__(self, model_name="meta-llama/Llama-3.3-70B-Instruct-Turbo-Free"):
         """Generator using Together.ai"""
         self.model = model_name
         self.api_key = st.secrets["TOGETHER_API_KEY"]
