@@ -1,7 +1,7 @@
 from retrieval import Retriever
 from generation import Generator
 
-generator = Generator(model_name="llama3")
+generator = Generator()
 retriever = Retriever()
 
 def get_top_k_docs(query, k=3):
