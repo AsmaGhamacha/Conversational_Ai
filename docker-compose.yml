@@ -1,0 +1,47 @@
+version: '3.9'
+
+services:
+  app:
+    build: .
+    container_name: ai_study_app
+    ports:
+      - "8501:8501"
+    depends_on:
+      - ollama
+    environment:
+      - STREAMLIT_PORT=8501
+      - OLLAMA_HOST=ollama_backend
+    networks:
+      - ai_net
+    command: >
+      bash -c "
+        until curl -s http://ollama_backend:11434; do
+          echo '⏳ Waiting for Ollama to be ready...';
+          sleep 2;
+        done &&
+        echo '✅ Ollama is up!' &&
+        streamlit run app.py
+      "
+
+  ollama:
+    image: ollama/ollama
+    container_name: ollama_backend
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    networks:
+      - ai_net
+    command: >
+      bash -c "
+        ollama serve &
+        sleep 5 &&
+        ollama pull llama3:8b &&
+        tail -f /dev/null
+      "
+
+volumes:
+  ollama_data:
+
+networks:
+  ai_net:

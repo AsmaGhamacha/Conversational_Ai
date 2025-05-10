@@ -6,12 +6,15 @@
 4. receiving the answer
 """
 import requests
+import os
 
 class Generator:
-    def __init__(self, model_name="llama3"):
+    def __init__(self, model_name="llama3:8b"):
         """generator"""
         self.model = model_name
-        self.url = "http://localhost:11434/api/generate"
+        host = os.getenv("OLLAMA_HOST", "localhost")  # Docker will override this
+        self.url = f"http://{host}:11434/api/generate"
+
 
     def generate_answer(self, query, context):
         prompt = f"""You are an AI assistant. Use the following context to answer the user's question.
