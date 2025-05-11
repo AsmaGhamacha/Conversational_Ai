@@ -22,7 +22,7 @@ def log_latency(query, latency):
 
 def main():
     retriever = Retriever()
-    generator = Generator(model_name="llama3")
+    generator = Generator()
 
     print("Hellloooo! I'm a conversation AI agent here to assist you. Type 'Bye' to exit.\n")
 

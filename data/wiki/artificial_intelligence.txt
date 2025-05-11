@@ -57,6 +57,7 @@ Female gendering of AI technologies – Gender biases in digital technologyPages
 Glossary of artificial intelligence – List of definitions of terms and concepts commonly used in the study of artificial intelligence
 Intelligence amplification – Use of information technology to augment human intelligence
 Intelligent agent – Software agent which acts autonomously
+Intelligent automation – Software process that combines robotic process automation and artificial intelligence
 Mind uploading – Hypothetical process of digitally emulating a brain
 Organoid intelligence – Use of brain cells and brain organoids for intelligent computing
 Robotic process automation – Form of business process automation technology

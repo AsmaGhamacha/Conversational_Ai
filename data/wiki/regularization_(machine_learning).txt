@@ -1,4 +1,4 @@
-In mathematics, statistics, finance, and computer science, particularly in machine learning and inverse problems, regularization is a process that converts the answer of a problem to a simpler one. It is often used in solving ill-posed problems or to prevent overfitting.
+In mathematics, statistics, finance, and computer science, particularly in machine learning and inverse problems, regularization is a process that converts the answer to a problem to a simpler one. It is often used in solving ill-posed problems or to prevent overfitting.
 Although regularization procedures can be divided in many ways, the following delineation is particularly helpful:
 
 Explicit regularization is regularization whenever one explicitly adds a term to the optimization problem.  These terms could be priors, penalties, or constraints. Explicit regularization is commonly employed with ill-posed optimization problems. The regularization term, or penalty, imposes a cost on the optimization function to make the optimal solution unique.
