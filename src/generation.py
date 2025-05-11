@@ -5,6 +5,7 @@
 3. send the prompt to llama3
 4. receiving the answer
 """
+
 import streamlit as st
 import os
 import requests
@@ -13,8 +14,12 @@ class Generator:
     def __init__(self, model_name="deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B"):
         """Generator using Together.ai"""
         self.model = model_name
-        self.api_key = st.secrets["TOGETHER_API_KEY"]
-
+        try:
+            self.api_key = st.secrets.get("TOGETHER_API_KEY")
+        except Exception:
+            from dotenv import load_dotenv
+            load_dotenv()
+            self.api_key = os.getenv("TOGETHER_API_KEY")
         print("Model in use:", self.model)
         
         if not self.api_key:

@@ -184,3 +184,5 @@ ai_agent/
 cached/
 logs/
 __pycache__/
+
+.env
